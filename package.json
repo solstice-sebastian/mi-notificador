@@ -1,0 +1,15 @@
+{
+  "name": "mi-notificador",
+  "version": "0.0.0",
+  "description": "helps easy alert setting based on fib percentages and entry price ",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon node index.js"
+  },
+  "author": "Aric Allen",
+  "license": "MIT",
+  "dependencies": {
+    "node-coinigy": "^2.0.1",
+    "nodemon": "^1.14.11"
+  }
+}
