@@ -1,3 +1,5 @@
 node_modules/
 private/
+public/vendor/
+.vscode/
 yarn.lock
