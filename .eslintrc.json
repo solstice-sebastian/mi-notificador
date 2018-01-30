@@ -24,6 +24,7 @@
         "trailingComma": "es5",
         "arrowParens": "always"
       }
-    ]
+    ],
+    "import/extensions": 0
   }
 }
