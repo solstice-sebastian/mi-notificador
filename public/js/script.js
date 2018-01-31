@@ -1,13 +1,27 @@
-const getAlertsButton = document.getElementById('get-alerts');
-const logAlerts = async () => {
-  // getAlerts({ headers }).then((response) => console.log(response));
-  console.log('logging...');
-  fetch('test')
-    .then((response) => {
-      console.log('response', response);
-      return response.text();
-    })
-    .then((text) => console.log(`text:`, text));
-};
+(() => {
+  const checkStatus = async () => {
+    fetch('health').then((res) => {
+      console.log(res.ok ? 'success' : 'error');
+    });
+  };
+  checkStatus();
 
-getAlertsButton.addEventListener('click', logAlerts);
+  const getAlertsButton = document.getElementById('get-alerts');
+
+  const getAlerts = () => {
+    // const exchange = 'BNC';
+    fetch('getAlerts')
+      .then((res) => {
+        if (res.ok === true) {
+          return res.json();
+        }
+        return Promise.reject(res);
+      })
+      .then((json) => {
+        console.log('json', JSON.stringify(json));
+      })
+      .catch((err) => console.log(`err:`, err));
+  };
+
+  getAlertsButton.addEventListener('click', getAlerts);
+})();

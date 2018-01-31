@@ -1,3 +1,5 @@
+import fetch from 'node-fetch';
+
 const method = 'POST';
 const endpoint = 'https://api.coinigy.com/api/v1/alerts';
 
@@ -8,22 +10,27 @@ const endpoint = 'https://api.coinigy.com/api/v1/alerts';
  * "exch_name": "Poloniex"
  * "mkt_name": "BTC/ETH"
  *
- * @param {String} exchangeCode
+ * @param {String} exchange
  * @param {String} symbol
  */
-const getAlerts = ({ exchangeCode = null, symbol = null, headers = null }) => {
-  if ((exchangeCode !== null && symbol === null) || (exchangeCode === null && symbol !== null)) {
-    throw new Error(`filtering requires both 'exchangeCode' && 'symbol'`);
+const getAlerts = (headers, options = {}) => {
+  const { exchange, symbol } = options;
+  if (
+    (exchange !== undefined && symbol === undefined) ||
+    (exchange === undefined && symbol !== undefined)
+  ) {
+    throw new Error(`filtering requires both 'exchange' && 'symbol' options`);
   }
 
   return fetch(endpoint, { method, headers })
-    .then(({ data }) => {
-      if (exchangeCode !== null && symbol !== null) {
-        return data.open_alerts.find(
-          (alert) => alert.exch_name === exchangeCode && alert.mkt_name === symbol
+    .then((response) => response.json())
+    .then((json) => {
+      if (exchange !== undefined && symbol !== undefined) {
+        return json.open_alerts.find(
+          (alert) => alert.exch_name === exchange && alert.mkt_name === symbol
         );
       }
-      return data.open_alerts;
+      return json.open_alerts;
     })
     .catch((err) => {
       console.log(`err:`, err);
