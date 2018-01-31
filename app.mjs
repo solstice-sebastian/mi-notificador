@@ -1,24 +1,30 @@
 import express from 'express';
-import fs from 'fs';
+import path from 'path';
+import serveStatic from 'serve-static';
+
+// import fs from 'fs';
 
 // setup server
 const app = express();
+app.use(serveStatic('public'));
 
-// const options = {
-//   extensions: ['html', 'js', 'css'],
-//   index: false,
-// };
+const setHeaders = (res, path) => {
+  console.log(`res:`, res);
+  const mimeType = serveStatic.mime.lookup(path);
+  res.set('mime', 'application/js');
+  // if ()
+}
 
-app.get('/', (req, res) => {
-  // app.use(express.static('public', options));
-  fs.readFile('public/index.html', (err, data) => {
-    if (err) {
-      console.log(`err:`, err);
-    } else {
-      res.contentType('html');
-      res.send(data);
-    }
-  });
+const options = {
+  extensions: ['html', 'js', 'css'],
+  index: 'index.html',
+  setHeaders,
+};
+
+app.use(express.static('public', options));
+
+app.get('/test', (req, res) => {
+  res.send('success');
 });
 
 // start server
