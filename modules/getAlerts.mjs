@@ -26,7 +26,7 @@ const getAlerts = (headers, options = {}) => {
     .then((response) => response.json())
     .then(({ data }) => {
       if (exchange !== undefined && symbol !== undefined) {
-        return data.open_alerts.find(
+        return data.open_alerts.filter(
           (alert) => alert.exch_name === exchange && alert.mkt_name === symbol
         );
       }

@@ -18,7 +18,7 @@
       method: 'POST',
       headers,
       body: JSON.stringify({
-        exchange: 'GDAX',
+        exchange: 'Global Digital Asset Exchange',
         symbol: 'BTC/USD',
       }),
     })
