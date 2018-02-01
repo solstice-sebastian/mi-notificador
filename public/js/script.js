@@ -8,10 +8,15 @@
 
   const getAlertsButton = document.getElementById('get-alerts');
 
+  const headers = new Headers({
+    'Content-Type': 'application/json',
+  });
+
   const getAlerts = () => {
     // const exchange = 'BNC';
     fetch('getAlerts', {
       method: 'POST',
+      headers,
       body: JSON.stringify({
         exchange: 'GDAX',
         symbol: 'BTC/USD',
@@ -31,4 +36,7 @@
   };
 
   getAlertsButton.addEventListener('click', getAlerts);
+
+  // during dev
+  getAlertsButton.click();
 })();

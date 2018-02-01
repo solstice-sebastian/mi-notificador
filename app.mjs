@@ -1,7 +1,7 @@
 import express from 'express';
+import bodyParser from 'body-parser';
 import keys from './private/keys.mjs';
 import getAlerts from './modules/getAlerts.mjs';
-import bodyParser from 'body-parser';
 
 const { apiKey, apiSecret } = keys;
 
@@ -19,13 +19,14 @@ app.use(express.static('public'));
 
 // middleware
 app.use(bodyParser.json());
+// app.use(bodyParser.urlencoded({ extended: false }));
 
 app.get('/health', (req, res) => {
   res.send();
 });
 
 app.post('/getAlerts', (req, res) => {
-  getAlerts(headers, req.params).then((alerts) => {
+  getAlerts(headers, req.body).then((alerts) => {
     res.send(alerts);
   });
 });
