@@ -12,7 +12,10 @@
     // const exchange = 'BNC';
     fetch('getAlerts', {
       method: 'POST',
-      body: {},
+      body: JSON.stringify({
+        exchange: 'GDAX',
+        symbol: 'BTC/USD',
+      }),
     })
       .then((res) => {
         if (res.ok === true) {
@@ -21,7 +24,8 @@
         return Promise.reject(res);
       })
       .then((json) => {
-        console.log('json', JSON.stringify(json));
+        console.log(`json:`, json);
+        console.log('jsonString', JSON.stringify(json));
       })
       .catch((err) => console.log(`err:`, err));
   };

@@ -9,6 +9,7 @@
   "author": "Aric Allen",
   "license": "MIT",
   "dependencies": {
+    "body-parser": "^1.18.2",
     "eslint": "^4.16.0",
     "eslint-config-airbnb-base": "^12.1.0",
     "eslint-config-prettier": "^2.9.0",

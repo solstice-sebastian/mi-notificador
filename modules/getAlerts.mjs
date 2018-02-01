@@ -24,13 +24,13 @@ const getAlerts = (headers, options = {}) => {
 
   return fetch(endpoint, { method, headers })
     .then((response) => response.json())
-    .then((json) => {
+    .then(({ data }) => {
       if (exchange !== undefined && symbol !== undefined) {
-        return json.open_alerts.find(
+        return data.open_alerts.find(
           (alert) => alert.exch_name === exchange && alert.mkt_name === symbol
         );
       }
-      return json.open_alerts;
+      return data.open_alerts;
     })
     .catch((err) => {
       console.log(`err:`, err);
