@@ -26,9 +26,11 @@ app.get('/health', (req, res) => {
 });
 
 app.post('/getAlerts', (req, res) => {
-  getAlerts(headers, req.body).then((alerts) => {
-    res.send(alerts);
-  });
+  getAlerts(headers, req.body)
+    .then((alerts) => {
+      res.send(alerts);
+    })
+    .catch((err) => res.send(err));
 });
 
 // start server

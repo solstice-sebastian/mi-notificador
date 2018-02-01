@@ -6,20 +6,31 @@
   };
   checkStatus();
 
-  const getAlertsButton = document.getElementById('get-alerts');
-
   const headers = new Headers({
     'Content-Type': 'application/json',
   });
 
+  const getAlertsButton = document.getElementById('get-alerts');
+
+  const getExchange = () => {
+    const exchangeInput = document.getElementById('exchange');
+    const exchange = exchangeInput.innerText.trim();
+    return exchange;
+  };
+
+  const getSymbol = () => {
+    const symbolInput = document.getElementById('symbol');
+    const symbol = symbolInput.innerText.trim();
+    return symbol;
+  };
+
   const getAlerts = () => {
-    // const exchange = 'BNC';
     fetch('getAlerts', {
       method: 'POST',
       headers,
       body: JSON.stringify({
-        exchange: 'Global Digital Asset Exchange',
-        symbol: 'BTC/USD',
+        exchange: getExchange(),
+        symbol: getSymbol(),
       }),
     })
       .then((res) => {
@@ -38,5 +49,5 @@
   getAlertsButton.addEventListener('click', getAlerts);
 
   // during dev
-  getAlertsButton.click();
+  // getAlertsButton.click();
 })();

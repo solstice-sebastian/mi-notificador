@@ -1,4 +1,7 @@
 import fetch from 'node-fetch';
+import utils from './utils.mjs';
+
+const { isEmpty } = utils;
 
 const method = 'POST';
 const endpoint = 'https://api.coinigy.com/api/v1/alerts';
@@ -25,16 +28,14 @@ const getAlerts = (headers, options = {}) => {
   return fetch(endpoint, { method, headers })
     .then((response) => response.json())
     .then(({ data }) => {
-      if (exchange !== undefined && symbol !== undefined) {
+      if (isEmpty(exchange) === false && isEmpty(symbol) === false) {
         return data.open_alerts.filter(
           (alert) => alert.exch_name === exchange && alert.mkt_name === symbol
         );
       }
       return data.open_alerts;
     })
-    .catch((err) => {
-      console.log(`err:`, err);
-    });
+    .catch((err) => err);
 };
 
 export default getAlerts;

@@ -6,13 +6,44 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>MiNotificador</title>
   <link rel="stylesheet" href="vendor/css/material-components-web.min.css">
+  <link rel="stylesheet" href="css/style.css">
   <script type="module" src="js/script.js"></script>
 </head>
 <body class="mdc-typography">
   <h1>MiNotificador</h1>
   <p>Simple alert helper for Coinigy...</p>
 
-  <button class="mdc-button mdc-button--raised mdc-button--compact" id="get-alerts">GET ALERTS</button>
+  <form action="#" id="get-alerts-form">
+    <div>
+      <div class="mdc-form-field">
+        <div class="mdc-text-field" data-mdc-auto-init="MDCTextField">
+          <input id="exchange" type="text" class="mdc-text-field__input">
+          <label for="exchange" class="mdc-text-field__label">
+            Excahnge
+          </label>
+          <div class="mdc-line-ripple"></div>
+        </div>
+      </div>
+
+      <div class="mdc-form-field">
+        <div class="mdc-text-field" data-mdc-auto-init="MDCTextField">
+          <input id="symbol" type="text" class="mdc-text-field__input">
+          <label for="symbol" class="mdc-text-field__label">
+            Symbol
+          </label>
+          <div class="mdc-line-ripple"></div>
+        </div>
+      </div>
+    </div>
+
+    <button id="get-alerts" type="submit"
+            class="mdc-button
+                   mdc-button--raised
+                   mdc-ripple-surface"
+            data-mdc-auto-init="MDCRipple">
+      Get Alerts
+    </button>
+  </form>
 
   <script src="vendor/js/material-components-web.min.js"></script>
   <script>mdc.autoInit()</script>
