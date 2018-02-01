@@ -10,7 +10,10 @@
 
   const getAlerts = () => {
     // const exchange = 'BNC';
-    fetch('getAlerts')
+    fetch('getAlerts', {
+      method: 'POST',
+      body: {},
+    })
       .then((res) => {
         if (res.ok === true) {
           return res.json();
