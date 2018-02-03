@@ -4,11 +4,7 @@ const method = 'POST';
 const endpoint = 'https://api.coinigy.com/api/v1/deleteAlert';
 
 /**
- * get alerts with optional filter of exch name and symbol
- *
- * api response contains these keys
- * "exch_name": "Poloniex"
- * "mkt_name": "BTC/ETH"
+ * delete alert based on its id
  *
  * @param {Header} headers headers for fetch request
  * @param {String} alertId
@@ -18,7 +14,11 @@ const deleteAlert = ({ headers, alertId }) => {
     alert_id: alertId,
   };
 
-  return fetch(endpoint, { method, headers, body })
+  return fetch(endpoint, {
+    method,
+    headers,
+    body: JSON.stringify(body),
+  })
     .then((response) => response.json())
     .catch((err) => err);
 };

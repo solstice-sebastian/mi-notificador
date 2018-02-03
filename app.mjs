@@ -34,7 +34,7 @@ app.post('/getAlerts', (req, res) => {
 });
 
 app.post('/deleteAlert', (req, res) => {
-  deleteAlert({ headers, alertId: req.body.id })
+  deleteAlert({ headers, alertId: req.body.alertId })
     .then((alerts) => {
       res.send(alerts);
     })

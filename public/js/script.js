@@ -122,10 +122,11 @@
     const alertIds = selectedRows.map((row) => row.getAttribute('data-record-id'));
     // console.log(`alertIds:`, alertIds);
     const alertId = alertIds[0];
+    console.log(`alertId:`, alertId);
     fetch('deleteAlert', {
       method: 'POST',
       headers,
-      body: { alertId },
+      body: JSON.stringify({ alertId }),
     })
       .then((response) => response.json())
       .then((response) => {
