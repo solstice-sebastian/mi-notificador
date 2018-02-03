@@ -1,4 +1,7 @@
 (() => {
+  const { buildTable } = window.Utils();
+  const { MaterialDataTable, componentHandler } = window;
+
   const checkStatus = async () => {
     fetch('health').then((res) => {
       console.log(res.ok ? 'success' : 'error');
@@ -10,7 +13,9 @@
     'Content-Type': 'application/json',
   });
 
-  const apiMap = {
+  const alertMap = {
+    id: 'alert_id',
+
     trigger: {
       id: 'operator_text',
       text: 'Trigger',
@@ -28,9 +33,6 @@
     },
   };
 
-  const getAlertsButton = document.getElementById('get-alerts');
-  let alertsTable = document.getElementById('alerts-table');
-
   const getExchange = () => {
     const exchangeInput = document.getElementById('exchange');
     const exchange = exchangeInput.innerText.trim();
@@ -41,43 +43,6 @@
     const symbolInput = document.getElementById('symbol');
     const symbol = symbolInput.innerText.trim();
     return symbol;
-  };
-
-  const buildAlertTable = (alerts) => {
-    // build header row
-    // build the table
-    const theaders = Object.keys(apiMap).map((key) => {
-      const cell = document.createElement('th');
-      cell.classList.add(...apiMap[key].classList);
-      cell.innerText = apiMap[key].text;
-      return cell;
-    });
-    // add to thead
-    const thead = alertsTable.querySelector('thead tr');
-    // clear out placeholders
-    thead.innerHTML = '';
-    theaders.forEach((th) => {
-      thead.appendChild(th);
-    });
-
-    const tbody = alertsTable.querySelector('tbody');
-    // clear out placeholders
-    tbody.innerHTML = '';
-    alerts.forEach((alert) => {
-      const row = document.createElement('tr');
-      row.setAttribute('data-alert-id', alert.alert_id);
-
-      Object.keys(apiMap).forEach((key) => {
-        const cell = document.createElement('td');
-        cell.classList.add(...apiMap[key].classList);
-        cell.innerText = alert[apiMap[key].id];
-        row.appendChild(cell);
-      });
-      tbody.append(row);
-    });
-
-    // make rows selectable
-    alertsTable = new window.MaterialDataTable(alertsTable);
   };
 
   const getAlerts = () =>
@@ -95,9 +60,16 @@
         }
         return Promise.reject(res);
       })
-      .then(buildAlertTable)
+      .then((alerts) => {
+        // const table = new MaterialDataTable(buildTable(alertMap, alerts));
+        // componentHandler.upgradeElement(table.element_, 'MaterialDataTable');
+        const table = buildTable(alertMap, alerts);
+        const container = document.getElementById('alerts');
+        container.appendChild(table);
+      })
       .catch((err) => console.log(`err:`, err));
 
+  const getAlertsButton = document.getElementById('get-alerts');
   getAlertsButton.addEventListener('click', getAlerts);
 
   // during dev
