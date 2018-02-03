@@ -120,13 +120,10 @@
       table: document.querySelector('#alerts table'),
     });
     const alertIds = selectedRows.map((row) => row.getAttribute('data-record-id'));
-    // console.log(`alertIds:`, alertIds);
-    const alertId = alertIds[0];
-    console.log(`alertId:`, alertId);
-    fetch('deleteAlert', {
+    fetch('deleteAlerts', {
       method: 'POST',
       headers,
-      body: JSON.stringify({ alertId }),
+      body: JSON.stringify({ alertIds }),
     })
       .then((response) => response.json())
       .then((response) => {

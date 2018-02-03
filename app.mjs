@@ -34,11 +34,19 @@ app.post('/getAlerts', (req, res) => {
 });
 
 app.post('/deleteAlert', (req, res) => {
-  deleteAlert({ headers, alertId: req.body.alertId })
+  const { alertId } = req.body;
+  deleteAlert({ headers, alertId })
     .then((alerts) => {
       res.send(alerts);
     })
     .catch((err) => res.send(err));
+});
+
+app.post('/deleteAlerts', (req, res) => {
+  const { alertIds } = req.body;
+  const promises = alertIds.map((alertId) => deleteAlert({ headers, alertId }));
+  const result = Promise.all(promises).catch((err) => res.send(err));
+  res.send(result);
 });
 
 // start server
