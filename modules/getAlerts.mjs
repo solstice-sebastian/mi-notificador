@@ -12,9 +12,15 @@ const filter = ({ data, options }) => {
     alerts = data.open_alerts;
   }
 
-  return alerts
-    .filter((alert) => (exchange ? alert.exch_name === exchange : true))
-    .filter((alert) => (symbol ? alert.mkt_name === symbol : true));
+  const filtered = alerts
+    .filter(
+      (alert) => (exchange ? alert.exch_name.toLowerCase().includes(exchange.toLowerCase()) : true)
+    )
+    .filter(
+      (alert) => (symbol ? alert.mkt_name.toLowerCase().includes(symbol.toLowerCase()) : true)
+    );
+
+  return filtered;
 };
 
 /**

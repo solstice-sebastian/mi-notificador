@@ -1,6 +1,8 @@
 (() => {
-  const { emptyElems, listenForEnter } = window.Utils();
+  const { emptyElems, listenForEnter, runLater } = window.Utils();
   const { buildMDLTable, getSelectedRows } = window.MDLHelpers();
+
+  const API_WAIT_TIME = 1000 * 1.5; // 1.5 seconds
 
   const checkStatus = async () => {
     fetch('health').then((res) => {
@@ -13,13 +15,13 @@
     'Content-Type': 'application/json',
   });
 
-  let model = []; // the data for the table
+  let _model = []; // the data for the table
 
   const cacheModel = (data) => {
-    model = data;
+    _model = data;
   };
 
-  const getModel = () => model;
+  const getModel = () => _model;
 
   const alertsContainer = document.getElementById('alerts');
   const exchangeInput = document.getElementById('exchange');
@@ -68,6 +70,29 @@
     return symbol;
   };
 
+  const filterAlerts = (model) => {
+    const symbol = getSymbol();
+    const exchange = getExchange();
+    const filtered = model
+      .filter((record) => {
+        const key = alertMap.symbol.id;
+        return record[key].toLowerCase().includes(symbol.toLowerCase());
+      })
+      .filter(
+        (record) =>
+          record[alertMap.exchange.id].toLowerCase().includes(exchange.toLowerCase()) ||
+          record.exch_code.toLowerCase().includes(exchange.toLowerCase())
+      );
+    return filtered;
+  };
+
+  const update = (model = getModel()) => {
+    emptyElems(elemsToEmpty);
+    const filtered = filterAlerts(model);
+    buildMDLTable({ model: filtered, map: alertMap, container: alertsContainer });
+    return model;
+  };
+
   const getAlerts = () =>
     fetch('getAlerts', {
       method: 'POST',
@@ -85,42 +110,16 @@
       })
       .then((alerts) => {
         cacheModel(alerts);
-        buildMDLTable({ model: alerts, map: alertMap, container: alertsContainer });
+        return update(alerts);
       })
       .catch((err) => console.log(`err:`, err));
-
-  const getAlertsClick = () => {
-    emptyElems(elemsToEmpty);
-    getAlerts();
-  };
-
-  const filterBySymbol = () => {
-    const symbol = getSymbol();
-    const filtered = getModel().filter((record) => {
-      const key = alertMap.symbol.id;
-      return record[key].toLowerCase().includes(symbol.toLowerCase());
-    });
-    emptyElems(elemsToEmpty);
-    buildMDLTable({ model: filtered, map: alertMap, container: alertsContainer });
-  };
-
-  const filterByExchange = () => {
-    const exchange = getExchange();
-    const filtered = getModel().filter(
-      (record) =>
-        record[alertMap.exchange.id].toLowerCase().includes(exchange.toLowerCase()) ||
-        record.exch_code.toLowerCase().includes(exchange.toLowerCase())
-    );
-    emptyElems(elemsToEmpty);
-    buildMDLTable({ model: filtered, map: alertMap, container: alertsContainer });
-  };
 
   const deleteSelected = () => {
     const selectedRows = getSelectedRows({
       table: document.querySelector('#alerts table'),
     });
     const alertIds = selectedRows.map((row) => row.getAttribute('data-record-id'));
-    fetch('deleteAlerts', {
+    return fetch('deleteAlerts', {
       method: 'POST',
       headers,
       body: JSON.stringify({ alertIds }),
@@ -130,9 +129,7 @@
         if (response && response.err_msg) {
           return Promise.reject(new Error(response.err_msg));
         }
-        // rebuild table on success
-        emptyElems(elemsToEmpty);
-        return getAlertsClick();
+        return Promise.resolve(runLater(getAlerts, API_WAIT_TIME));
       })
       .catch((err) => console.log(`err:`, err));
   };
@@ -140,12 +137,12 @@
   /**
    * event listeners
    */
-  getAlertsButton.addEventListener('click', getAlertsClick);
-  listenForEnter(symbolInput, getAlertsClick);
-  listenForEnter(exchangeInput, getAlertsClick);
+  getAlertsButton.addEventListener('click', getAlerts);
+  listenForEnter(symbolInput, () => update());
+  listenForEnter(exchangeInput, () => update());
 
-  symbolInput.addEventListener('keyup', filterBySymbol);
-  exchangeInput.addEventListener('keyup', filterByExchange);
+  symbolInput.addEventListener('keyup', () => update());
+  exchangeInput.addEventListener('keyup', () => update());
 
   deleteAlertsButton.addEventListener('click', deleteSelected);
 

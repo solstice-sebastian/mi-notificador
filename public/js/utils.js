@@ -89,5 +89,17 @@
     });
   };
 
-  window.Utils = () => ({ buildTable, emptyElems, listenForEnter });
+  const runLater = (fn, wait) => {
+    return new Promise((res, rej) => {
+      window.setTimeout(() => {
+        try {
+          res(fn());
+        } catch (err) {
+          rej(err);
+        }
+      }, wait);
+    });
+  }
+
+  window.Utils = () => ({ buildTable, emptyElems, listenForEnter, runLater });
 })();
