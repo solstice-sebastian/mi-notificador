@@ -1,6 +1,6 @@
 (() => {
-  const { buildTable, emptyElems, listenForEnter } = window.Utils();
-  const { componentHandler } = window;
+  const { emptyElems, listenForEnter } = window.Utils();
+  const { buildMDLTable } = window.MDLHelpers();
 
   const checkStatus = async () => {
     fetch('health').then((res) => {
@@ -13,9 +13,12 @@
     'Content-Type': 'application/json',
   });
 
+  let model; // the data table
+
   const alertsContainer = document.getElementById('alerts');
   const exchangeInput = document.getElementById('exchange');
   const symbolInput = document.getElementById('symbol');
+  const getAlertsButton = document.getElementById('get-alerts');
 
   const elemsToEmpty = [alertsContainer];
 
@@ -71,33 +74,29 @@
         return Promise.reject(res);
       })
       .then((alerts) => {
-        // const table = new MaterialDataTable(buildTable(alertMap, alerts));
-        // componentHandler.upgradeElement(table.element_, 'MaterialDataTable');
-        const table = buildTable(alertMap, alerts);
-        table.classList.add(
-          ...[
-            'mdl-data-table',
-            'mdl-js-data-table',
-            'mdl-data-table--selectable',
-            'mdl-shadow--2dp',
-          ]
-        );
-
-        componentHandler.upgradeElement(table);
-        alertsContainer.appendChild(table);
+        model = alerts; // cache for filtering
+        buildMDLTable({ model, map: alertMap, container: alertsContainer });
       })
       .catch((err) => console.log(`err:`, err));
-
-  const getAlertsButton = document.getElementById('get-alerts');
 
   const getAlertsClick = () => {
     emptyElems(elemsToEmpty);
     getAlerts();
   };
 
+  // const filterSymbol = () => {
+  //   const value =
+  // };
+
+  /**
+   * event listeners
+   */
   getAlertsButton.addEventListener('click', getAlertsClick);
   listenForEnter(symbolInput, getAlertsClick);
   listenForEnter(exchangeInput, getAlertsClick);
+
+  // symbolInput.addEventListener('keypress', filterSymbol);
+  // exchangeInput.addEventListener('keypress', filterExchange);
 
   // during dev
   // getAlertsButton.click();
