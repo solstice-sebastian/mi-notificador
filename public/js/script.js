@@ -29,7 +29,7 @@
   };
 
   const getAlertsButton = document.getElementById('get-alerts');
-  const alertsTable = document.getElementById('alerts-table');
+  let alertsTable = document.getElementById('alerts-table');
 
   const getExchange = () => {
     const exchangeInput = document.getElementById('exchange');
@@ -43,7 +43,7 @@
     return symbol;
   };
 
-  const displayAlerts = (alerts) => {
+  const buildAlertTable = (alerts) => {
     // build header row
     // build the table
     const theaders = Object.keys(apiMap).map((key) => {
@@ -54,11 +54,15 @@
     });
     // add to thead
     const thead = alertsTable.querySelector('thead tr');
+    // clear out placeholders
+    thead.innerHTML = '';
     theaders.forEach((th) => {
       thead.appendChild(th);
     });
 
     const tbody = alertsTable.querySelector('tbody');
+    // clear out placeholders
+    tbody.innerHTML = '';
     alerts.forEach((alert) => {
       const row = document.createElement('tr');
       row.setAttribute('data-alert-id', alert.alert_id);
@@ -71,10 +75,13 @@
       });
       tbody.append(row);
     });
+
+    // make rows selectable
+    alertsTable = new window.MaterialDataTable(alertsTable);
   };
 
-  const getAlerts = () => {
-    return fetch('getAlerts', {
+  const getAlerts = () =>
+    fetch('getAlerts', {
       method: 'POST',
       headers,
       body: JSON.stringify({
@@ -88,9 +95,8 @@
         }
         return Promise.reject(res);
       })
-      .then(displayAlerts)
+      .then(buildAlertTable)
       .catch((err) => console.log(`err:`, err));
-  };
 
   getAlertsButton.addEventListener('click', getAlerts);
 
