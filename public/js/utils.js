@@ -1,5 +1,4 @@
 (() => {
-
   /**
    * helper functions that can be used anywher
    */

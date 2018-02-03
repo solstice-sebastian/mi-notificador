@@ -30,13 +30,16 @@
 
   const alertMap = {
     id: 'alert_id',
-
     symbol: {
       id: 'mkt_name',
       text: 'Symbol',
       classList: ['mdl-data-table__cell--non-numeric', 'symbol'],
     },
-
+    exchange: {
+      id: 'exch_name',
+      text: 'Exchange',
+      classList: ['mdl-data-table__cell--non-numeric', 'exchange'],
+    },
     trigger: {
       id: 'operator_text',
       text: 'Trigger',
@@ -90,12 +93,23 @@
     getAlerts();
   };
 
-  const filterSymbol = () => {
+  const filterBySymbol = () => {
     const symbol = getSymbol();
     const filtered = getModel().filter((record) => {
       const key = alertMap.symbol.id;
       return record[key].toLowerCase().includes(symbol.toLowerCase());
     });
+    emptyElems(elemsToEmpty);
+    buildMDLTable({ model: filtered, map: alertMap, container: alertsContainer });
+  };
+
+  const filterByExchange = () => {
+    const exchange = getExchange();
+    const filtered = getModel().filter(
+      (record) =>
+        record[alertMap.exchange.id].toLowerCase().includes(exchange.toLowerCase()) ||
+        record.exch_code.toLowerCase().includes(exchange.toLowerCase())
+    );
     emptyElems(elemsToEmpty);
     buildMDLTable({ model: filtered, map: alertMap, container: alertsContainer });
   };
@@ -107,8 +121,8 @@
   listenForEnter(symbolInput, getAlertsClick);
   listenForEnter(exchangeInput, getAlertsClick);
 
-  symbolInput.addEventListener('keyup', filterSymbol);
-  // exchangeInput.addEventListener('keypress', filterExchange);
+  symbolInput.addEventListener('keyup', filterBySymbol);
+  exchangeInput.addEventListener('keyup', filterByExchange);
 
   // during dev
   // getAlertsButton.click();
