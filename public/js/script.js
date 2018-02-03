@@ -1,5 +1,5 @@
 (() => {
-  const { buildTable, emptyElems } = window.Utils();
+  const { buildTable, emptyElems, listenForEnter } = window.Utils();
   const { componentHandler } = window;
 
   const checkStatus = async () => {
@@ -14,6 +14,9 @@
   });
 
   const alertsContainer = document.getElementById('alerts');
+  const exchangeInput = document.getElementById('exchange');
+  const symbolInput = document.getElementById('symbol');
+
   const elemsToEmpty = [alertsContainer];
 
   const alertMap = {
@@ -43,13 +46,11 @@
   };
 
   const getExchange = () => {
-    const exchangeInput = document.getElementById('exchange');
     const exchange = exchangeInput.value;
     return exchange;
   };
 
   const getSymbol = () => {
-    const symbolInput = document.getElementById('symbol');
     const symbol = symbolInput.value;
     return symbol;
   };
@@ -88,10 +89,15 @@
       .catch((err) => console.log(`err:`, err));
 
   const getAlertsButton = document.getElementById('get-alerts');
-  getAlertsButton.addEventListener('click', () => {
+
+  const getAlertsClick = () => {
     emptyElems(elemsToEmpty);
     getAlerts();
-  });
+  };
+
+  getAlertsButton.addEventListener('click', getAlertsClick);
+  listenForEnter(symbolInput, getAlertsClick);
+  listenForEnter(exchangeInput, getAlertsClick);
 
   // during dev
   // getAlertsButton.click();

@@ -1,4 +1,10 @@
 /**
+ * helper functions that can be used anywher
+ */
+
+const ENTER_KEY_CODE = 13;
+
+/**
  * @param  {Object} modelMap = {} contains data for each 'column' in table
  *  modelMap = {
  *    colName: {
@@ -73,6 +79,15 @@ const emptyElems = (elems) => {
   }
 };
 
-const Utils = () => ({ buildTable, emptyElems });
+const listenForEnter = (elem, fn) => {
+  elem.addEventListener('keypress', (e) => {
+    const key = e.which || e.keyCode;
+    if (key === ENTER_KEY_CODE) {
+      fn(elem);
+    }
+  });
+};
+
+const Utils = () => ({ buildTable, emptyElems, listenForEnter });
 
 window.Utils = Utils;
