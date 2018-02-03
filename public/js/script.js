@@ -12,22 +12,19 @@
 
   const apiMap = {
     trigger: {
+      id: 'operator_text',
       text: 'Trigger',
-      key: 'operator_text',
       classList: ['mdl-data-table__cell--non-numeric', 'trigger'],
-      id: 'operator-text',
     },
     note: {
+      id: 'alert_note',
       text: 'Notes',
-      key: 'alert_note',
       classList: ['mdl-data-table__cell--non-numeric', 'note'],
-      id: 'alert-note',
     },
     price: {
+      id: 'price',
       text: 'Price',
-      key: 'alert_price',
-      classList: ['trigger'],
-      id: 'alert-price',
+      classList: ['price'],
     },
   };
 
@@ -61,24 +58,19 @@
       thead.appendChild(th);
     });
 
-    // const rows = alerts.map((alert, i) => {
-    //   let rowTag = 'tr';
-    //   let cellTag = 'td';
-    //   if (i === 0) {
-    //     // header row
-    //     rowTag = 'th';
-    //   }
-    //   const row = document.createElement('tr');
-    //   // trigger
-    //   const cells = Object.keys.map((key) => {
-    //     const cell = document.createElement('td');
-    //     cell.classList.add(apiMap[key].classList.join(' '));
-    //     cell.innerText = apiMap[key].key
-    //   })
-    //   row.appendChild();
-    //   row.appendChild(document.createElement('td').classList.add(apiMap.notes.id));
-    //   row.appendChild(document.createElement('td').classList.add(apiMap.price.id));
-    // });
+    const tbody = alertsTable.querySelector('tbody');
+    alerts.forEach((alert) => {
+      const row = document.createElement('tr');
+      row.setAttribute('data-alert-id', alert.alert_id);
+
+      Object.keys(apiMap).forEach((key) => {
+        const cell = document.createElement('td');
+        cell.classList.add(...apiMap[key].classList);
+        cell.innerText = alert[apiMap[key].id];
+        row.appendChild(cell);
+      });
+      tbody.append(row);
+    });
   };
 
   const getAlerts = () => {
