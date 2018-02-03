@@ -74,7 +74,7 @@
           ...[
             'mdl-data-table',
             'mdl-js-data-table',
-            // 'mdl-data-table--selectable',
+            'mdl-data-table--selectable',
             'mdl-shadow--2dp',
           ]
         );
