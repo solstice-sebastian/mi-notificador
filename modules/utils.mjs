@@ -9,4 +9,5 @@ const isEmpty = (x = {}) =>
 const utils = {
   isEmpty,
 };
+
 export default utils;

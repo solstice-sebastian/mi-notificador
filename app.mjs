@@ -19,7 +19,6 @@ app.use(express.static('public'));
 
 // middleware
 app.use(bodyParser.json());
-// app.use(bodyParser.urlencoded({ extended: false }));
 
 app.get('/health', (req, res) => {
   res.send();

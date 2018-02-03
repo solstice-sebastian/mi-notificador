@@ -24,8 +24,13 @@
     return symbol;
   };
 
+  // const displayAlerts = (alerts) => {
+
+
+  // };
+
   const getAlerts = () => {
-    fetch('getAlerts', {
+    return fetch('getAlerts', {
       method: 'POST',
       headers,
       body: JSON.stringify({
@@ -39,10 +44,7 @@
         }
         return Promise.reject(res);
       })
-      .then((json) => {
-        console.log(`json:`, json);
-        console.log('jsonString', JSON.stringify(json));
-      })
+      .then(displayAlerts)
       .catch((err) => console.log(`err:`, err));
   };
 
