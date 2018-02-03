@@ -44,13 +44,13 @@
 
   const getExchange = () => {
     const exchangeInput = document.getElementById('exchange');
-    const exchange = exchangeInput.innerText.trim();
+    const exchange = exchangeInput.value;
     return exchange;
   };
 
   const getSymbol = () => {
     const symbolInput = document.getElementById('symbol');
-    const symbol = symbolInput.innerText.trim();
+    const symbol = symbolInput.value;
     return symbol;
   };
 
@@ -94,5 +94,5 @@
   });
 
   // during dev
-  getAlertsButton.click();
+  // getAlertsButton.click();
 })();
