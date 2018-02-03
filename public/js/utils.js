@@ -57,6 +57,22 @@ const buildTable = (modelMap = {}, data = [], elem) => {
   return table;
 };
 
-const Utils = () => ({ buildTable });
+const emptyElems = (elems) => {
+  if (elems && Array.isArray(elems)) {
+    elems.forEach((elem) => {
+      if (elem instanceof Element) {
+        elem.childNodes.forEach((child) => {
+          child.parentNode.removeChild(child);
+        });
+      } else {
+        throw new Error(`emptyElems expects Array[Element]. '${typeof elem}' passed instead`);
+      }
+    });
+  } else {
+    throw new Error(`emptyElems expects Array[Element]. '${typeof elems}' passed instead`);
+  }
+};
+
+const Utils = () => ({ buildTable, emptyElems });
 
 window.Utils = Utils;

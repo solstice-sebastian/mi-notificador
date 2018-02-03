@@ -1,6 +1,6 @@
 (() => {
-  const { buildTable } = window.Utils();
-  const { MaterialDataTable, componentHandler } = window;
+  const { buildTable, emptyElems } = window.Utils();
+  const { componentHandler } = window;
 
   const checkStatus = async () => {
     fetch('health').then((res) => {
@@ -12,6 +12,9 @@
   const headers = new Headers({
     'Content-Type': 'application/json',
   });
+
+  const alertsContainer = document.getElementById('alerts');
+  const elemsToEmpty = [alertsContainer];
 
   const alertMap = {
     id: 'alert_id',
@@ -80,13 +83,15 @@
         );
 
         componentHandler.upgradeElement(table);
-        const container = document.getElementById('alerts');
-        container.appendChild(table);
+        alertsContainer.appendChild(table);
       })
       .catch((err) => console.log(`err:`, err));
 
   const getAlertsButton = document.getElementById('get-alerts');
-  getAlertsButton.addEventListener('click', getAlerts);
+  getAlertsButton.addEventListener('click', () => {
+    emptyElems(elemsToEmpty);
+    getAlerts();
+  });
 
   // during dev
   getAlertsButton.click();
