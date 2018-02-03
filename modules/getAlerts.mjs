@@ -1,7 +1,4 @@
 import fetch from 'node-fetch';
-// import utils from './utils.mjs';
-
-// const { isEmpty } = utils;
 
 const method = 'POST';
 const endpoint = 'https://api.coinigy.com/api/v1/alerts';
@@ -32,7 +29,7 @@ const filter = ({ data, options }) => {
  * @param {String} options.symbol symbol/ticker name
  * @param {String} options.type=open open|history
  */
-const getAlerts = (headers, options = {}) =>
+const getAlerts = ({ headers, options = {} }) =>
   fetch(endpoint, { method, headers })
     .then((response) => response.json())
     .then(({ data }) => filter({ data, options }))

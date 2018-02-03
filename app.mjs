@@ -2,6 +2,7 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import keys from './private/keys.mjs';
 import getAlerts from './modules/getAlerts.mjs';
+import deleteAlert from './modules/deleteAlert.mjs';
 
 const { apiKey, apiSecret } = keys;
 
@@ -25,7 +26,15 @@ app.get('/health', (req, res) => {
 });
 
 app.post('/getAlerts', (req, res) => {
-  getAlerts(headers, req.body)
+  getAlerts({ headers, options: req.body })
+    .then((alerts) => {
+      res.send(alerts);
+    })
+    .catch((err) => res.send(err));
+});
+
+app.post('/deleteAlert', (req, res) => {
+  deleteAlert({ headers, alertId: req.body.id })
     .then((alerts) => {
       res.send(alerts);
     })
