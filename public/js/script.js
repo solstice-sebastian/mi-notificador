@@ -120,7 +120,23 @@
       table: document.querySelector('#alerts table'),
     });
     const alertIds = selectedRows.map((row) => row.getAttribute('data-record-id'));
-    console.log(`alertIds:`, alertIds);
+    // console.log(`alertIds:`, alertIds);
+    const alertId = alertIds[0];
+    fetch('deleteAlert', {
+      method: 'POST',
+      headers,
+      body: { alertId },
+    })
+      .then((response) => response.json())
+      .then((response) => {
+        if (response && response.err_msg) {
+          return Promise.reject(new Error(response.err_msg));
+        }
+        // rebuild table on success
+        emptyElems(elemsToEmpty);
+        return getAlertsClick();
+      })
+      .catch((err) => console.log(`err:`, err));
   };
 
   /**
