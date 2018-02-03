@@ -1,6 +1,6 @@
 (() => {
   const { emptyElems, listenForEnter } = window.Utils();
-  const { buildMDLTable } = window.MDLHelpers();
+  const { buildMDLTable, getSelectedRows } = window.MDLHelpers();
 
   const checkStatus = async () => {
     fetch('health').then((res) => {
@@ -25,6 +25,7 @@
   const exchangeInput = document.getElementById('exchange');
   const symbolInput = document.getElementById('symbol');
   const getAlertsButton = document.getElementById('get-alerts');
+  const deleteAlertsButton = document.getElementById('delete-alerts');
 
   const elemsToEmpty = [alertsContainer];
 
@@ -114,6 +115,14 @@
     buildMDLTable({ model: filtered, map: alertMap, container: alertsContainer });
   };
 
+  const deleteSelected = () => {
+    const selectedRows = getSelectedRows({
+      table: document.querySelector('#alerts table'),
+    });
+    const alertIds = selectedRows.map((row) => row.getAttribute('data-record-id'));
+    console.log(`alertIds:`, alertIds);
+  };
+
   /**
    * event listeners
    */
@@ -123,6 +132,8 @@
 
   symbolInput.addEventListener('keyup', filterBySymbol);
   exchangeInput.addEventListener('keyup', filterByExchange);
+
+  deleteAlertsButton.addEventListener('click', deleteSelected);
 
   // during dev
   // getAlertsButton.click();

@@ -1,4 +1,5 @@
 (() => {
+  const IS_SELECTED_CLASS = 'is-selected';
   if (window.componentHandler === 'undefined') {
     throw new Error('missing MDL dependencies for MDLHelpers');
   }
@@ -19,5 +20,12 @@
     container.appendChild(table);
   };
 
-  window.MDLHelpers = () => ({ buildMDLTable });
+  const getSelectedRows = ({ table }) => {
+    if (!table || typeof table !== 'object' || table instanceof Element === false) {
+      throw new Error('getSelectedRows expects a table element');
+    }
+    return Array.from(table.rows).filter((row) => row.classList.contains(IS_SELECTED_CLASS));
+  };
+
+  window.MDLHelpers = () => ({ buildMDLTable, getSelectedRows });
 })();
