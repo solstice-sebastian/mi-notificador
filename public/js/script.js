@@ -13,7 +13,13 @@
     'Content-Type': 'application/json',
   });
 
-  let model; // the data table
+  let model = []; // the data for the table
+
+  const cacheModel = (data) => {
+    model = data;
+  };
+
+  const getModel = () => model;
 
   const alertsContainer = document.getElementById('alerts');
   const exchangeInput = document.getElementById('exchange');
@@ -74,8 +80,8 @@
         return Promise.reject(res);
       })
       .then((alerts) => {
-        model = alerts; // cache for filtering
-        buildMDLTable({ model, map: alertMap, container: alertsContainer });
+        cacheModel(alerts);
+        buildMDLTable({ model: alerts, map: alertMap, container: alertsContainer });
       })
       .catch((err) => console.log(`err:`, err));
 
@@ -84,9 +90,15 @@
     getAlerts();
   };
 
-  // const filterSymbol = () => {
-  //   const value =
-  // };
+  const filterSymbol = () => {
+    const symbol = getSymbol();
+    const filtered = getModel().filter((record) => {
+      const key = alertMap.symbol.id;
+      return record[key].toLowerCase().includes(symbol.toLowerCase());
+    });
+    emptyElems(elemsToEmpty);
+    buildMDLTable({ model: filtered, map: alertMap, container: alertsContainer });
+  };
 
   /**
    * event listeners
@@ -95,7 +107,7 @@
   listenForEnter(symbolInput, getAlertsClick);
   listenForEnter(exchangeInput, getAlertsClick);
 
-  // symbolInput.addEventListener('keypress', filterSymbol);
+  symbolInput.addEventListener('keyup', filterSymbol);
   // exchangeInput.addEventListener('keypress', filterExchange);
 
   // during dev
