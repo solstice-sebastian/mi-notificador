@@ -16,6 +16,12 @@
   const alertMap = {
     id: 'alert_id',
 
+    symbol: {
+      id: 'market_name',
+      text: 'Symbol',
+      classList: ['mdl-data-table__cell--non-numeric', 'symbol']
+    },
+
     trigger: {
       id: 'operator_text',
       text: 'Trigger',
@@ -66,6 +72,7 @@
         const table = buildTable(alertMap, alerts);
         const container = document.getElementById('alerts');
         container.appendChild(table);
+        // const mdt = new MaterialDataTable(table);
       })
       .catch((err) => console.log(`err:`, err));
 
