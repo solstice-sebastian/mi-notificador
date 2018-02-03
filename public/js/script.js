@@ -17,9 +17,9 @@
     id: 'alert_id',
 
     symbol: {
-      id: 'market_name',
+      id: 'mkt_name',
       text: 'Symbol',
-      classList: ['mdl-data-table__cell--non-numeric', 'symbol']
+      classList: ['mdl-data-table__cell--non-numeric', 'symbol'],
     },
 
     trigger: {
@@ -70,9 +70,18 @@
         // const table = new MaterialDataTable(buildTable(alertMap, alerts));
         // componentHandler.upgradeElement(table.element_, 'MaterialDataTable');
         const table = buildTable(alertMap, alerts);
+        table.classList.add(
+          ...[
+            'mdl-data-table',
+            'mdl-js-data-table',
+            // 'mdl-data-table--selectable',
+            'mdl-shadow--2dp',
+          ]
+        );
+
+        componentHandler.upgradeElement(table);
         const container = document.getElementById('alerts');
         container.appendChild(table);
-        // const mdt = new MaterialDataTable(table);
       })
       .catch((err) => console.log(`err:`, err));
 

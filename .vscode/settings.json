@@ -3,4 +3,5 @@
   "beautify.config": {
     "indent_size": 2
   },
+  "search.useIgnoreFiles": false,
 }
