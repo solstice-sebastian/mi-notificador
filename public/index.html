@@ -22,8 +22,8 @@
         <div class="mdl-layout-spacer"></div>
         <!-- Navigation -->
         <nav class="mdl-navigation">
-          <a class="mdl-navigation__link" href="#">Managing</a>
-          <a class="mdl-navigation__link" href="#">Creating</a>
+          <a class="mdl-navigation__link router-link" href="#managing" data-route-id="managing">Managing</a>
+          <a class="mdl-navigation__link router-link" href="#creating" data-route-id="creating">Creating</a>
         </nav>
       </div>
     </header>
@@ -32,44 +32,53 @@
     <div class="mdl-layout__drawer">
       <span class="mdl-layout-title">MiNotificador</span>
       <nav class="mdl-navigation">
-        <a class="mdl-navigation__link" href="#">Managing</a>
-        <a class="mdl-navigation__link" href="#">Creating</a>
+        <a class="mdl-navigation__link router-link" href="#managing">Managing</a>
+        <a class="mdl-navigation__link router-link" href="#creating">Creating</a>
       </nav>
     </div>
 
     <main class="mdl-layout__content">
       <div class="page-content">
-        <h3>A simple alert helper for Coinigy...</h3>
 
-        <form action="#" id="get-alerts-form">
-          <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-            <input class="mdl-textfield__input" type="text" id="symbol">
-            <label class="mdl-textfield__label" for="symbol">Symbol</label>
+        <section data-route-id="home" class="route is-active">
+          <h3>A simple alert helper for Coinigy...</h3>
+        </section>
+
+        <section data-route-id="managing" class="route">
+          <form action="#" id="get-alerts-form">
+            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+              <input class="mdl-textfield__input" type="text" id="symbol">
+              <label class="mdl-textfield__label" for="symbol">Symbol</label>
+            </div>
+
+            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+              <input class="mdl-textfield__input" type="text" id="exchange">
+              <label class="mdl-textfield__label" for="exchange">Exchange</label>
+            </div>
+          </form>
+
+          <div class="action-buttons">
+            <button id="get-alerts" class="mdl-button
+              mdl-button--primary
+              mdl-button--raised">
+              Get Alerts
+            </button>
+
+            <button id="delete-alerts" class="mdl-button
+              mdl-button--accent
+              mdl-button--raised">
+              Delete Selected
+            </button>
           </div>
 
-          <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-            <input class="mdl-textfield__input" type="text" id="exchange">
-            <label class="mdl-textfield__label" for="exchange">Exchange</label>
-          </div>
-        </form>
+          <div id="spinner-container" class="spinner-container"></div>
 
-        <div class="action-buttons">
-          <button id="get-alerts" class="mdl-button
-            mdl-button--primary
-            mdl-button--raised">
-            Get Alerts
-          </button>
+          <div id="alerts"></div>
+        </section>
 
-          <button id="delete-alerts" class="mdl-button
-            mdl-button--accent
-            mdl-button--raised">
-            Delete Selected
-          </button>
-        </div>
-
-        <div id="spinner-container" class="spinner-container"></div>
-
-        <div id="alerts"></div>
+        <section data-route-id="creating" class="route">
+          ... coming soon
+        </section>
 
       </div> <!-- /page-content -->
     </main> <!-- /mdl-layout -->

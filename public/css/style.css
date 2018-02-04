@@ -6,6 +6,14 @@ table {
   margin-top: 20px;
 }
 
+.route {
+  display: none;
+}
+
+.route.is-active {
+  display: initial;
+}
+
 /**
  * utility styles
  */

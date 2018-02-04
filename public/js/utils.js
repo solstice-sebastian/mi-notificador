@@ -89,8 +89,8 @@
     });
   };
 
-  const runLater = (fn, wait) => {
-    return new Promise((res, rej) => {
+  const runLater = (fn, wait) =>
+    new Promise((res, rej) => {
       window.setTimeout(() => {
         try {
           res(fn());
@@ -99,7 +99,30 @@
         }
       }, wait);
     });
-  }
 
-  window.Utils = () => ({ buildTable, emptyElems, listenForEnter, runLater });
+  const createRouter = ({ links, isActiveClass = 'is-active' }) => {
+    if (Array.isArray(links) === false) {
+      throw new Error('createRouter expects an array of route elems');
+    }
+    const router = {
+      update({ target: link }) {
+        const routes = document.querySelectorAll('.route');
+        routes.forEach((route) => {
+          if (route.getAttribute('data-route-id') === link.getAttribute('data-route-id')) {
+            route.classList.add(isActiveClass);
+          } else {
+            route.classList.remove(isActiveClass);
+          }
+        });
+      },
+    };
+
+    links.forEach((link) => {
+      link.addEventListener('click', router.update);
+    });
+
+    return router;
+  };
+
+  window.Utils = () => ({ buildTable, emptyElems, listenForEnter, runLater, createRouter });
 })();

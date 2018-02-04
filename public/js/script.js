@@ -1,5 +1,5 @@
 (() => {
-  const { emptyElems, listenForEnter, runLater } = window.Utils();
+  const { emptyElems, listenForEnter, runLater, createRouter } = window.Utils();
   const { buildMDLTable, getSelectedRows, createSpinner } = window.MDLHelpers();
 
   const API_WAIT_TIME = 1000 * 1.5; // 1.5 seconds
@@ -23,6 +23,8 @@
 
   const getModel = () => _model;
 
+  const links = Array.from(document.querySelectorAll('.router-link'));
+  createRouter({ links });
   const alertsContainer = document.getElementById('alerts');
   const exchangeInput = document.getElementById('exchange');
   const symbolInput = document.getElementById('symbol');
