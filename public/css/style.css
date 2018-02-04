@@ -6,6 +6,29 @@ table {
   margin-top: 20px;
 }
 
+/**
+ * utility styles
+ */
+
+.is-hidden {
+  display: none;
+}
+
 .full-width {
   width: 80%;
+}
+
+/**
+ *  mdl overrides/tweaks
+ */
+
+.mdl-spinner {
+  width: 60px;
+  height: 60px;
+}
+
+.spinner-container {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  text-align: center;
 }

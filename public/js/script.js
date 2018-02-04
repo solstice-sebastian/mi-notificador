@@ -1,6 +1,6 @@
 (() => {
   const { emptyElems, listenForEnter, runLater } = window.Utils();
-  const { buildMDLTable, getSelectedRows } = window.MDLHelpers();
+  const { buildMDLTable, getSelectedRows, createSpinner } = window.MDLHelpers();
 
   const API_WAIT_TIME = 1000 * 1.5; // 1.5 seconds
 
@@ -28,6 +28,9 @@
   const symbolInput = document.getElementById('symbol');
   const getAlertsButton = document.getElementById('get-alerts');
   const deleteAlertsButton = document.getElementById('delete-alerts');
+  const spinnerContainer = document.getElementById('spinner-container');
+  const spinner = createSpinner({ container: spinnerContainer });
+  spinnerContainer.appendChild(spinner);
 
   const elemsToEmpty = [alertsContainer];
 
@@ -89,12 +92,15 @@
   const update = (model = getModel()) => {
     emptyElems(elemsToEmpty);
     const filtered = filterAlerts(model);
-    buildMDLTable({ model: filtered, map: alertMap, container: alertsContainer });
+    buildMDLTable({ model: filtered, map: alertMap, container: alertsContainer }).then(() =>
+      spinner.hide()
+    );
     return model;
   };
 
-  const getAlerts = () =>
-    fetch('getAlerts', {
+  const getAlerts = () => {
+    spinner.show();
+    return fetch('getAlerts', {
       method: 'POST',
       headers,
       body: JSON.stringify({
@@ -113,6 +119,7 @@
         return update(alerts);
       })
       .catch((err) => console.log(`err:`, err));
+  };
 
   const deleteSelected = () => {
     const selectedRows = getSelectedRows({
@@ -145,7 +152,4 @@
   exchangeInput.addEventListener('keyup', () => update());
 
   deleteAlertsButton.addEventListener('click', deleteSelected);
-
-  // during dev
-  // getAlertsButton.click();
 })();

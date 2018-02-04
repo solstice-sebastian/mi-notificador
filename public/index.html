@@ -1,55 +1,88 @@
 <!doctype html>
 <html>
 
-  <head>
-    <meta charset="utf-8">
-    <meta name="description">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>MiNotificador</title>
-    <link rel="stylesheet" href="vendor/css/material.min.css">
-    <link rel="stylesheet" href="css/style.css">
+<head>
+  <meta charset="utf-8">
+  <meta name="description">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MiNotificador</title>
+  <link rel="stylesheet" href="vendor/css/material.min.css">
+  <link rel="stylesheet" href="css/style.css">
 
-    <script src="js/utils.js"></script>
-  </head>
+  <script src="js/utils.js"></script>
+</head>
 
-  <body class="mdl-typography">
-    <h1>MiNotificador</h1>
-    <p>Simple alert helper for Coinigy...</p>
-
-    <form action="#" id="get-alerts-form">
-      <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-        <input class="mdl-textfield__input" type="text" id="symbol">
-        <label class="mdl-textfield__label" for="symbol">Symbol</label>
+<body class="mdl-typography">
+  <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+    <header class="mdl-layout__header">
+      <div class="mdl-layout__header-row">
+        <!-- Title -->
+        <span class="mdl-layout-title">MiNotificador</span>
+        <!-- Add spacer, to align navigation to the right -->
+        <div class="mdl-layout-spacer"></div>
+        <!-- Navigation -->
+        <nav class="mdl-navigation">
+          <a class="mdl-navigation__link" href="#">Managing</a>
+          <a class="mdl-navigation__link" href="#">Creating</a>
+        </nav>
       </div>
+    </header>
 
-      <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-        <input class="mdl-textfield__input" type="text" id="exchange">
-        <label class="mdl-textfield__label" for="exchange">Exchange</label>
-      </div>
-    </form>
+    <!-- drawer -->
+    <div class="mdl-layout__drawer">
+      <span class="mdl-layout-title">MiNotificador</span>
+      <nav class="mdl-navigation">
+        <a class="mdl-navigation__link" href="#">Managing</a>
+        <a class="mdl-navigation__link" href="#">Creating</a>
+      </nav>
+    </div>
 
-    <button id="get-alerts" class="mdl-button
-      mdl-button--raised
-      mdl-ripple-surface">
-      Get Alerts
-    </button>
+    <main class="mdl-layout__content">
+      <div class="page-content">
+        <h3>A simple alert helper for Coinigy...</h3>
 
-    <button id="delete-alerts" class="mdl-button
-      mdl-button--raised
-      mdl-ripple-surface">
-      Delete Selected
-    </button>
+        <form action="#" id="get-alerts-form">
+          <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+            <input class="mdl-textfield__input" type="text" id="symbol">
+            <label class="mdl-textfield__label" for="symbol">Symbol</label>
+          </div>
 
-    <div id="alerts"></div>
+          <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+            <input class="mdl-textfield__input" type="text" id="exchange">
+            <label class="mdl-textfield__label" for="exchange">Exchange</label>
+          </div>
+        </form>
 
-    <!-- uncomment individual files to debug -->
-    <!-- <script src="vendor/js/mdlComponentHandler.js"></script> -->
-    <!-- <script src="vendor/js/checkbox.js"></script> -->
-    <!-- <script src="vendor/js/data-table.js"></script> -->
+        <div class="action-buttons">
+          <button id="get-alerts" class="mdl-button
+            mdl-button--primary
+            mdl-button--raised">
+            Get Alerts
+          </button>
 
-    <script src="vendor/js/material.min.js"></script>
-    <script src="js/mdl-helpers.js"></script>
-    <script src="js/script.js"></script>
-  </body>
+          <button id="delete-alerts" class="mdl-button
+            mdl-button--accent
+            mdl-button--raised">
+            Delete Selected
+          </button>
+        </div>
+
+        <div id="spinner-container" class="spinner-container"></div>
+
+        <div id="alerts"></div>
+
+      </div> <!-- /page-content -->
+    </main> <!-- /mdl-layout -->
+  </div>
+
+  <!-- uncomment individual files to debug -->
+  <!-- <script src="vendor/js/mdlComponentHandler.js"></script> -->
+  <!-- <script src="vendor/js/checkbox.js"></script> -->
+  <!-- <script src="vendor/js/data-table.js"></script> -->
+  <script src="vendor/js/material.js"></script>
+  <!-- <script src="vendor/js/material.min.js"></script> -->
+  <script src="js/mdl-helpers.js"></script>
+  <script src="js/script.js"></script>
+</body>
 
 </html>

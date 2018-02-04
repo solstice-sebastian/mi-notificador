@@ -1,5 +1,8 @@
 (() => {
   const IS_SELECTED_CLASS = 'is-selected';
+  const IS_HIDDEN_CLASS = 'is-hidden';
+  const IS_ACTIVE_CLASS = 'is-active';
+
   if (window.componentHandler === 'undefined') {
     throw new Error('missing MDL dependencies for MDLHelpers');
   }
@@ -17,7 +20,7 @@
     );
 
     componentHandler.upgradeElement(table);
-    container.appendChild(table);
+    return Promise.resolve(container.appendChild(table));
   };
 
   const getSelectedRows = ({ table }) => {
@@ -27,5 +30,22 @@
     return Array.from(table.rows).filter((row) => row.classList.contains(IS_SELECTED_CLASS));
   };
 
-  window.MDLHelpers = () => ({ buildMDLTable, getSelectedRows });
+  const createSpinner = ({ container, classList = [] }) => {
+    const spinner = document.createElement('div');
+    spinner.container = container;
+    spinner.show = () => {
+      spinner.container.classList.remove(IS_HIDDEN_CLASS);
+      spinner.classList.add(IS_ACTIVE_CLASS);
+      return spinner;
+    };
+    spinner.hide = () => {
+      spinner.container.classList.add(IS_HIDDEN_CLASS);
+      spinner.classList.remove(IS_ACTIVE_CLASS);
+    };
+
+    spinner.classList.add(...['mdl-spinner', 'mdl-js-spinner'].concat(classList));
+    return spinner;
+  };
+
+  window.MDLHelpers = () => ({ buildMDLTable, getSelectedRows, createSpinner });
 })();
