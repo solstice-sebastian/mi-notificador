@@ -110,8 +110,10 @@
         routes.forEach((route) => {
           if (route.getAttribute('data-route-id') === link.getAttribute('data-route-id')) {
             route.classList.add(isActiveClass);
+            document.body.className = route.getAttribute('data-route-id');
           } else {
             route.classList.remove(isActiveClass);
+            document.body.classList.add(route.getAttribute('data-route-id'));
           }
         });
       },

@@ -124,6 +124,8 @@
   };
 
   const deleteSelected = () => {
+    emptyElems(elemsToEmpty);
+    spinner.show();
     const selectedRows = getSelectedRows({
       table: document.querySelector('#alerts table'),
     });
@@ -135,6 +137,7 @@
     })
       .then((response) => response.json())
       .then((response) => {
+        spinner.hide();
         if (response && response.err_msg) {
           return Promise.reject(new Error(response.err_msg));
         }
