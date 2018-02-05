@@ -1,6 +1,5 @@
 node_modules/
 private/
 public/vendor/
-public/fonts/
 .vscode/
 yarn.lock
