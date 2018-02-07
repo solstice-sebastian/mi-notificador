@@ -127,11 +127,11 @@
   };
 
   const deleteSelected = () => {
-    emptyElems(elemsToEmpty);
     spinner.show();
     const selectedRows = getSelectedRows({
       table: document.querySelector('#alerts table'),
     });
+    emptyElems(elemsToEmpty);
     const alertIds = selectedRows.map((row) => row.getAttribute('data-record-id'));
     return fetch('deleteAlerts', {
       method: 'POST',
@@ -166,7 +166,7 @@
    */
   if (IS_DEV === true) {
     router.goTo({ id: 'managing' });
-    // symbolInput.value = 'BTC/USD';
-    // getAlertsButton.click();
+    symbolInput.value = 'BTC/USD';
+    runLater(getAlerts, 50);
   }
 })();
