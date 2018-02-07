@@ -47,5 +47,48 @@
     return spinner;
   };
 
-  window.MDLHelpers = () => ({ buildMDLTable, getSelectedRows, createSpinner });
+  const createDialog = ({ elem = null } = {}) => {
+    let dialog;
+    if (elem !== null && elem instanceof Element === false) {
+      throw new Error('createDialog requires HTMLElement');
+    } else if (elem === null) {
+      dialog = document.querySelector('dialog');
+    } else {
+      dialog = elem;
+    }
+
+    if (typeof dialog.showModal !== 'function') {
+      console.log('requires dialog polyfill');
+      // dialogPolyfill.registerDialog(dialog);
+    }
+
+    // pieces
+    const titleElem = dialog.querySelector('.mdl-dialog__title');
+    const contentElem = dialog.querySelector('.mdl-dialog__content');
+
+    // listeners
+    dialog.querySelector('.close').addEventListener('click', () => {
+      dialog.close();
+    });
+
+    // methods
+    dialog.display = ({ title, content, classList = [], isModal = true, }) => {
+      titleElem.innerText = title;
+      contentElem.innerText = content;
+      dialog.classList.add(...classList);
+      if (isModal) {
+        dialog.showModal();
+      } else {
+        dialog.show();
+      }
+      return dialog;
+    };
+
+    dialog.getContent = () => contentElem.innerText;
+    dialog.getTitle = () => titleElem.innerText;
+
+    return dialog;
+  };
+
+  window.MDLHelpers = () => ({ buildMDLTable, getSelectedRows, createSpinner, createDialog });
 })();

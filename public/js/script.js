@@ -1,6 +1,6 @@
 (() => {
-  const { emptyElems, listenForEnter, runLater, createRouter } = window.Utils();
-  const { buildMDLTable, getSelectedRows, createSpinner } = window.MDLHelpers();
+  const { emptyElems, /* listenForEnter, */ runLater, createRouter } = window.Utils();
+  const { buildMDLTable, getSelectedRows, createSpinner, createDialog } = window.MDLHelpers();
 
   const IS_DEV = window.location.origin.includes('localhost');
 
@@ -42,6 +42,7 @@
   const spinnerContainer = document.getElementById('spinner-container');
   const spinner = createSpinner({ container: spinnerContainer });
   spinnerContainer.appendChild(spinner);
+  const dialog = createDialog();
 
   const elemsToEmpty = [alertsContainer];
 
@@ -162,6 +163,13 @@
   };
 
   const addAlerts = () => {
+    if (getExchange() === '' || getSymbol() === '' || getTarget() === '') {
+      return dialog.display({
+        title: 'Error',
+        content: 'All fields are required',
+      });
+    }
+
     spinner.show();
     emptyElems(elemsToEmpty);
     return fetch('addAlerts', {
@@ -192,7 +200,6 @@
 
   symbolInput.addEventListener('keyup', () => update());
   exchangeInput.addEventListener('keyup', () => update());
-
 
   /**
    * dev helpers
