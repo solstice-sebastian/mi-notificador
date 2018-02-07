@@ -31,6 +31,11 @@
   const alertsContainer = document.getElementById('alerts');
   const exchangeInput = document.getElementById('exchange');
   const symbolInput = document.getElementById('symbol');
+  const exchangeAddInput = document.getElementById('exchange-add');
+  const symbolAddInput = document.getElementById('symbol-add');
+  const targetAddInput = document.getElementById('target-add');
+  const fetchAlertsButton = document.getElementById('fetch-alerts');
+  const addAlertsButton = document.getElementById('add-alerts');
   const getAlertsButton = document.getElementById('get-alerts');
   const deleteAlertsButton = document.getElementById('delete-alerts');
   const spinnerContainer = document.getElementById('spinner-container');
@@ -78,6 +83,11 @@
     return symbol;
   };
 
+  const getTarget = () => {
+    const target = targetAddInput.value;
+    return target;
+  };
+
   const filterAlerts = (model) => {
     const symbol = getSymbol();
     const exchange = getExchange();
@@ -105,6 +115,7 @@
 
   const getAlerts = () => {
     spinner.show();
+    emptyElems(elemsToEmpty);
     return fetch('getAlerts', {
       method: 'POST',
       headers,
@@ -149,15 +160,42 @@
       .catch((err) => console.log(`err:`, err));
   };
 
+  const addAlerts = () => {
+    spinner.show();
+    emptyElems(elemsToEmpty);
+    return fetch('addAlerts', {
+      method: 'POST',
+      headers,
+      body: JSON.stringify({
+        exchange: getExchange(),
+        symbol: getSymbol(),
+        target: getTarget(),
+      }),
+    })
+      .then((res) => {
+        if (res.ok === true) {
+          return res.json();
+        }
+        return Promise.reject(res);
+      })
+      .then(getAlerts)
+      .catch((err) => console.log(`err:`, err));
+  };
+
   /**
    * event listeners
    */
   getAlertsButton.addEventListener('click', getAlerts);
-  listenForEnter(symbolInput, () => update());
-  listenForEnter(exchangeInput, () => update());
+  addAlertsButton.addEventListener('click', addAlerts);
+  fetchAlertsButton.addEventListener('click', getAlerts);
+  // listenForEnter(symbolInput, () => update());
+  // listenForEnter(exchangeInput, () => update());
 
   symbolInput.addEventListener('keyup', () => update());
   exchangeInput.addEventListener('keyup', () => update());
+
+  symbolAddInput.addEventListener('keyup', () => update());
+  exchangeAddInput.addEventListener('keyup', () => update());
 
   deleteAlertsButton.addEventListener('click', deleteSelected);
 
