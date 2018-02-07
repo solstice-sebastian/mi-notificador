@@ -24,7 +24,7 @@
   const getModel = () => _model;
 
   const links = Array.from(document.querySelectorAll('.router-link'));
-  createRouter({ links });
+  const router = createRouter({ links });
   const alertsContainer = document.getElementById('alerts');
   const exchangeInput = document.getElementById('exchange');
   const symbolInput = document.getElementById('symbol');
@@ -157,4 +157,9 @@
   exchangeInput.addEventListener('keyup', () => update());
 
   deleteAlertsButton.addEventListener('click', deleteSelected);
+
+  /**
+   * dev helpers
+   */
+  router.goTo({ id: 'managing' });
 })();

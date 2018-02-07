@@ -105,7 +105,7 @@
       throw new Error('createRouter expects an array of route elems');
     }
     const router = {
-      update({ target: link }) {
+      update({ link }) {
         const routes = document.querySelectorAll('.route');
         routes.forEach((route) => {
           if (route.getAttribute('data-route-id') === link.getAttribute('data-route-id')) {
@@ -116,6 +116,11 @@
             document.body.classList.add(route.getAttribute('data-route-id'));
           }
         });
+      },
+
+      goTo({ id }) {
+        const link = document.querySelector(`section[data-route-id="${id}"]`);
+        this.update({ link });
       },
     };
 

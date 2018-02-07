@@ -1,10 +1,6 @@
-body {
-  padding: 20px;
-}
-
-table {
-  margin-top: 20px;
-}
+/**
+ * global styles
+ */
 
 .route {
   display: none;
@@ -34,6 +30,17 @@ table {
   width: 60px;
   height: 60px;
 }
+
+.page-content {
+  min-width: 960px;
+  width: 100%;
+  max-width: 1440px;
+  padding: 15px;
+}
+
+/**
+ * custom styles
+ */
 
 .spinner-container {
   margin-top: 20px;

@@ -6,8 +6,8 @@
   <meta name="description">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>MiNotificador</title>
-  <!-- <link rel="stylesheet" href="vendor/css/material.min.css"> -->
-  <link rel="stylesheet" href="vendor/css/material.css">
+  <link rel="stylesheet" href="vendor/css/material.min.css">
+  <!-- <link rel="stylesheet" href="vendor/css/material.css"> -->
   <link rel="stylesheet" href="css/style.css">
   <!-- fonts held locally -->
   <link href="fonts/roboto.css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en" rel="stylesheet" type="text/css">
@@ -63,21 +63,22 @@
               <input class="mdl-textfield__input" type="text" id="exchange">
               <label class="mdl-textfield__label" for="exchange">Exchange</label>
             </div>
+
+            <div class="action-buttons">
+              <button id="get-alerts" class="mdl-button
+                mdl-button--primary
+                mdl-button--raised">
+                Get Alerts
+              </button>
+
+              <button id="delete-alerts" class="mdl-button
+                mdl-button--accent
+                mdl-button--raised">
+                Delete Selected
+              </button>
+            </div>
           </form>
 
-          <div class="action-buttons">
-            <button id="get-alerts" class="mdl-button
-              mdl-button--primary
-              mdl-button--raised">
-              Get Alerts
-            </button>
-
-            <button id="delete-alerts" class="mdl-button
-              mdl-button--accent
-              mdl-button--raised">
-              Delete Selected
-            </button>
-          </div>
 
           <div id="spinner-container" class="spinner-container"></div>
 
