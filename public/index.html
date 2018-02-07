@@ -6,6 +6,8 @@
   <meta name="description">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>MiNotificador</title>
+
+  <!-- <link rel="stylesheet" href="vendor/css/normalize.css"> -->
   <link rel="stylesheet" href="vendor/css/material.min.css">
   <!-- <link rel="stylesheet" href="vendor/css/material.css"> -->
   <link rel="stylesheet" href="css/style.css">
@@ -25,7 +27,7 @@
     <header class="mdl-layout__header">
       <div class="mdl-layout__header-row">
         <!-- Title -->
-        <span class="mdl-layout-title">MiNotificador</span>
+        <a class="mdl-layout-title router-link button" href="#home" data-route-id="home">MiNotificador</a>
         <!-- Add spacer, to align navigation to the right -->
         <div class="mdl-layout-spacer"></div>
         <!-- Navigation -->
@@ -38,10 +40,10 @@
 
     <!-- drawer -->
     <div class="mdl-layout__drawer">
-      <span class="mdl-layout-title">MiNotificador</span>
+        <a class="mdl-layout-title router-link button" href="#home" data-route-id="home">MiNotificador</a>
       <nav class="mdl-navigation">
-        <a class="mdl-navigation__link router-link" href="#managing">Managing</a>
-        <a class="mdl-navigation__link router-link" href="#creating">Creating</a>
+        <a class="mdl-navigation__link router-link" href="#managing" data-route-id="managing">Managing</a>
+        <a class="mdl-navigation__link router-link" href="#creating" data-route-id="creating">Creating</a>
       </nav>
     </div>
 

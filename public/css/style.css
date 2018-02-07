@@ -2,12 +2,21 @@
  * global styles
  */
 
+form {
+  margin-bottom: 15px;
+}
+
 .route {
   display: none;
 }
 
 .route.is-active {
   display: initial;
+}
+
+a.button {
+  text-decoration: none;
+  color: inherit;
 }
 
 /**

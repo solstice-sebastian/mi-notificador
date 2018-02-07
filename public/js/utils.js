@@ -119,13 +119,15 @@
       },
 
       goTo({ id }) {
-        const link = document.querySelector(`section[data-route-id="${id}"]`);
+        const link = document.querySelector(`.router-link[data-route-id="${id}"]`);
         this.update({ link });
       },
     };
 
     links.forEach((link) => {
-      link.addEventListener('click', router.update);
+      link.addEventListener('click', (e) => {
+        router.update({ link: e.target });
+      });
     });
 
     return router;

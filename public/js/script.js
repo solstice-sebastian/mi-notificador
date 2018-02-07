@@ -2,6 +2,8 @@
   const { emptyElems, listenForEnter, runLater, createRouter } = window.Utils();
   const { buildMDLTable, getSelectedRows, createSpinner } = window.MDLHelpers();
 
+  const IS_DEV = window.location.origin.includes('localhost');
+
   const API_WAIT_TIME = 1000 * 1.5; // 1.5 seconds
 
   const checkStatus = async () => {
@@ -25,6 +27,7 @@
 
   const links = Array.from(document.querySelectorAll('.router-link'));
   const router = createRouter({ links });
+  router.goTo({ id: 'home' });
   const alertsContainer = document.getElementById('alerts');
   const exchangeInput = document.getElementById('exchange');
   const symbolInput = document.getElementById('symbol');
@@ -161,5 +164,9 @@
   /**
    * dev helpers
    */
-  router.goTo({ id: 'managing' });
+  if (IS_DEV === true) {
+    // router.goTo({ id: 'managing' });
+    // symbolInput.value = 'BTC/USD';
+    // getAlertsButton.click();
+  }
 })();
