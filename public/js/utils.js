@@ -100,6 +100,13 @@
       }, wait);
     });
 
+  /**
+   * @usage elems that have a `.route` class and comma separated list of route ids in `data-route-ids`
+   * will be shown/hidden based on a `a.router-link[data-route-id]`
+   * @returns router object
+   * @method update({ link }) called on click
+   * @method goTo({ id })
+   */
   const createRouter = ({ links, isActiveClass = 'is-active' }) => {
     if (Array.isArray(links) === false) {
       throw new Error('createRouter expects an array of route elems');
@@ -108,7 +115,14 @@
       update({ link }) {
         const routes = document.querySelectorAll('.route');
         routes.forEach((route) => {
-          if (route.getAttribute('data-route-id') === link.getAttribute('data-route-id')) {
+          if (route.getAttribute('data-route-ids') === null) {
+            throw new Error(`route elems must also contain 'data-route-ids'`);
+          }
+
+          // route elems can have a comma separated list of routes to be visible for
+          const routeIds = route.getAttribute('data-route-ids').split(',');
+
+          if (routeIds.includes(link.getAttribute('data-route-id'))) {
             route.classList.add(isActiveClass);
             document.body.className = route.getAttribute('data-route-id');
           } else {

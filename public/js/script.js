@@ -28,16 +28,17 @@
   const links = Array.from(document.querySelectorAll('.router-link'));
   const router = createRouter({ links });
   router.goTo({ id: 'home' });
+
   const alertsContainer = document.getElementById('alerts');
+
   const exchangeInput = document.getElementById('exchange');
   const symbolInput = document.getElementById('symbol');
-  const exchangeAddInput = document.getElementById('exchange-add');
-  const symbolAddInput = document.getElementById('symbol-add');
   const targetAddInput = document.getElementById('target-add');
-  const fetchAlertsButton = document.getElementById('fetch-alerts');
+
   const addAlertsButton = document.getElementById('add-alerts');
   const getAlertsButton = document.getElementById('get-alerts');
   const deleteAlertsButton = document.getElementById('delete-alerts');
+
   const spinnerContainer = document.getElementById('spinner-container');
   const spinner = createSpinner({ container: spinnerContainer });
   spinnerContainer.appendChild(spinner);
@@ -187,24 +188,18 @@
    */
   getAlertsButton.addEventListener('click', getAlerts);
   addAlertsButton.addEventListener('click', addAlerts);
-  fetchAlertsButton.addEventListener('click', getAlerts);
-  // listenForEnter(symbolInput, () => update());
-  // listenForEnter(exchangeInput, () => update());
+  deleteAlertsButton.addEventListener('click', deleteSelected);
 
   symbolInput.addEventListener('keyup', () => update());
   exchangeInput.addEventListener('keyup', () => update());
 
-  symbolAddInput.addEventListener('keyup', () => update());
-  exchangeAddInput.addEventListener('keyup', () => update());
-
-  deleteAlertsButton.addEventListener('click', deleteSelected);
 
   /**
    * dev helpers
    */
   if (IS_DEV === true) {
-    router.goTo({ id: 'managing' });
+    router.goTo({ id: 'creating' });
     symbolInput.value = 'BTC/USD';
-    runLater(getAlerts, 50);
+    // runLater(getAlerts, 50);
   }
 })();

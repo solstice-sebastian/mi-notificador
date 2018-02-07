@@ -22,7 +22,7 @@
   <script src="js/utils.js"></script>
 </head>
 
-<body class="">
+<body>
   <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
     <header class="mdl-layout__header">
       <div class="mdl-layout__header-row">
@@ -50,23 +50,34 @@
     <main class="mdl-layout__content">
       <div class="page-content">
 
-        <section data-route-id="home" class="route is-active">
+        <section data-route-ids="home" class="route is-active">
           <h3>A simple alert helper for Coinigy...</h3>
+          <p>Instructions to setup apiKeys will go here.</p>
         </section>
 
-        <section data-route-id="managing" class="route">
+        <section data-route-ids="managing,creating" class="route">
           <form action="#" id="get-alerts-form">
-            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-              <input class="mdl-textfield__input" type="text" id="symbol">
-              <label class="mdl-textfield__label" for="symbol">Symbol</label>
+
+            <div class="form-row">
+              <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                <input class="mdl-textfield__input" type="text" id="symbol">
+                <label class="mdl-textfield__label" for="symbol">Symbol</label>
+              </div>
+
+              <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                <input class="mdl-textfield__input" type="text" id="exchange">
+                <label class="mdl-textfield__label" for="exchange">Exchange</label>
+              </div>
             </div>
 
-            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-              <input class="mdl-textfield__input" type="text" id="exchange">
-              <label class="mdl-textfield__label" for="exchange">Exchange</label>
+            <div class="form-row route" data-route-ids="creating">
+              <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                <input class="mdl-textfield__input" type="text" id="target">
+                <label class="mdl-textfield__label" for="target">Target</label>
+              </div>
             </div>
 
-            <div class="action-buttons">
+            <div class="form-row action-buttons">
               <button id="get-alerts" class="mdl-button
                 mdl-button--primary
                 mdl-button--raised">
@@ -75,65 +86,22 @@
 
               <button id="delete-alerts" class="mdl-button
                 mdl-button--accent
-                mdl-button--raised">
+                mdl-button--raised route" data-route-ids="managing">
                 Delete Selected
               </button>
-            </div>
-          </form>
-        </section>
 
-        <section data-route-id="creating" class="route">
-          <p>Create a set of alerts based on a target price. Currently this will add 7 alerts - one at 'target' and then +/- 1, 3, 5% of target.</p>
-          <form action="#" id="add-alerts-form">
-            <div class="form-row">
-              <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                <input class="mdl-textfield__input" type="text" id="symbol-add">
-                <label class="mdl-textfield__label" for="symbol">Symbol</label>
-              </div>
-
-              <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                <input class="mdl-textfield__input" type="text" id="exchange-add">
-                <label class="mdl-textfield__label" for="exchange">Exchange</label>
-              </div>
-            </div>
-
-            <div class="form-row">
-              <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                <input class="mdl-textfield__input" type="text" id="target-add">
-                <label class="mdl-textfield__label" for="target">Target</label>
-              </div>
-
-              <!-- <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                <input class="mdl-textfield__input" type="text" id="exchange">
-                <label class="mdl-textfield__label" for="exchange">Note</label>
-              </div> -->
-
-              <!-- <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                <input class="mdl-textfield__input" type="text" id="exchange">
-                <label class="mdl-textfield__label" for="exchange">Note</label>
-              </div> -->
-            </div>
-
-            <div class="form-row action-buttons">
               <button id="add-alerts" class="mdl-button
-                mdl-button--primary
-                mdl-button--raised">
+                mdl-button--accent
+                mdl-button--raised route" data-route-ids="creating">
                 Add Alerts
               </button>
-
-              <button id="fetch-alerts" class="mdl-button
-                mdl-button--accent
-                mdl-button--raised">
-                Fetch Alerts
-              </button>
             </div>
+
           </form>
         </section>
 
-        <section id="common-content">
-          <div id="spinner-container" class="spinner-container"></div>
-          <div id="alerts"></div>
-        </section>
+        <div id="spinner-container" class="spinner-container"></div>
+        <div id="alerts"></div>
       </div>
       <!-- /page-content -->
     </main>
