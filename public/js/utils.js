@@ -130,6 +130,13 @@
       });
     });
 
+    document.addEventListener('DOMContentLoaded', () => {
+      if (window.location.hash !== '') {
+        const id = window.location.hash.replace('#', '');
+        router.goTo({ id });
+      }
+    });
+
     return router;
   };
 

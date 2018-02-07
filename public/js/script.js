@@ -165,7 +165,7 @@
    * dev helpers
    */
   if (IS_DEV === true) {
-    // router.goTo({ id: 'managing' });
+    router.goTo({ id: 'managing' });
     // symbolInput.value = 'BTC/USD';
     // getAlertsButton.click();
   }
