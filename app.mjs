@@ -51,10 +51,15 @@ app.post('/deleteAlerts', (req, res) => {
 });
 
 app.post('/addAlerts', (req, res) => {
-  const { prices, symbol, exchange, note } = req.body;
-  const promises = prices.map((price) => addAlert({ headers, price, symbol, exchange, note }));
+  const { prices, symbol, exchange, notes } = req.body;
+  const promises = prices.map((price, i) =>
+    addAlert({ headers, price, symbol, exchange, note: notes[i] })
+  );
   const result = Promise.all(promises).catch((err) => res.send(err));
   res.send(result);
+  // const alerts = prices.map((price, i) => `price: ${price} - note: ${notes[i]}`);
+  // console.log(`alerts:`, alerts);
+  // res.send(alerts);
 });
 
 // start server
