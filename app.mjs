@@ -3,6 +3,7 @@ import bodyParser from 'body-parser';
 import keys from './private/keys.mjs';
 import getAlerts from './modules/getAlerts.mjs';
 import deleteAlert from './modules/deleteAlert.mjs';
+import addAlert from './modules/addAlert.mjs';
 
 const { apiKey, apiSecret } = keys;
 
@@ -45,6 +46,13 @@ app.post('/deleteAlert', (req, res) => {
 app.post('/deleteAlerts', (req, res) => {
   const { alertIds } = req.body;
   const promises = alertIds.map((alertId) => deleteAlert({ headers, alertId }));
+  const result = Promise.all(promises).catch((err) => res.send(err));
+  res.send(result);
+});
+
+app.post('/addAlerts', (req, res) => {
+  const { prices, symbol, exchange, note } = req.body;
+  const promises = prices.map((price) => addAlert({ headers, price, symbol, exchange, note }));
   const result = Promise.all(promises).catch((err) => res.send(err));
   res.send(result);
 });

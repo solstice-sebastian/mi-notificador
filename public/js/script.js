@@ -33,7 +33,7 @@
 
   const exchangeInput = document.getElementById('exchange');
   const symbolInput = document.getElementById('symbol');
-  const targetAddInput = document.getElementById('target-add');
+  const targetInput = document.getElementById('target');
 
   const addAlertsButton = document.getElementById('add-alerts');
   const getAlertsButton = document.getElementById('get-alerts');
@@ -86,8 +86,29 @@
   };
 
   const getTarget = () => {
-    const target = targetAddInput.value;
+    const target = targetInput.value;
     return target;
+  };
+
+  // TODO: get from user input
+  // const getModifiers = () => {
+  //   return [-0.08, -0.05, -0.03, -0.01, 1, 0.08, 0.05, 0.03, 0.01];
+  // };
+
+  const getModifiers = () => [-0.08, -0.05, -0.03, -0.01, 0, 0.01, 0.03, 0.05, 0.08];
+  const getNotes = () => getModifiers().map((mod) => `${mod * 100}% from target: ${getTarget()}`);
+
+  const getPrices = () => {
+    const modifiers = getModifiers();
+    const target = +getTarget();
+    return modifiers.map((modifier) => {
+      if (modifier < 0) {
+        const diff = target * Math.abs(modifier);
+        return target - diff;
+      }
+      const diff = target * modifier;
+      return target + diff;
+    });
   };
 
   const filterAlerts = (model) => {
@@ -107,12 +128,15 @@
   };
 
   const update = (model = getModel()) => {
-    emptyElems(elemsToEmpty);
-    const filtered = filterAlerts(model);
-    buildMDLTable({ model: filtered, map: alertMap, container: alertsContainer }).then(() =>
-      spinner.hide()
-    );
-    return model;
+    if (model !== undefined && model.length !== 0) {
+      emptyElems(elemsToEmpty);
+      const filtered = filterAlerts(model);
+      buildMDLTable({ model: filtered, map: alertMap, container: alertsContainer }).then(() =>
+        spinner.hide()
+      );
+      return model;
+    }
+    return null;
   };
 
   const getAlerts = () => {
@@ -178,7 +202,8 @@
       body: JSON.stringify({
         exchange: getExchange(),
         symbol: getSymbol(),
-        target: getTarget(),
+        prices: getPrices(),
+        notes: getNotes(),
       }),
     })
       .then((res) => {
@@ -207,6 +232,9 @@
   if (IS_DEV === true) {
     router.goTo({ id: 'creating' });
     symbolInput.value = 'BTC/USD';
+    exchangeInput.value = 'GDAX';
+    targetInput.value = 1000;
+
     // runLater(getAlerts, 50);
   }
 })();
