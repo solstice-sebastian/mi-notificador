@@ -192,13 +192,12 @@
    * add single alert
    * @return promise that resolves once the alert has been successfully added
    */
-  const addAlert = ({ exchange, symbol, price, note }) => {
-    return fetch('addAlert', {
+  const addAlert = ({ exchange, symbol, price, note }) =>
+    fetch('addAlert', {
       method: 'POST',
       headers,
       body: JSON.stringify({ exchange, symbol, price, note }),
     });
-  };
 
   const addAlerts = () => {
     if (getExchange() === '' || getSymbol() === '' || getTarget() === '') {
@@ -212,8 +211,8 @@
     emptyElems(elemsToEmpty);
     const exchange = getExchange();
     const symbol = getSymbol();
-    // const prices = getPrices();
-    const prices = [getTarget()];
+    const prices = getPrices();
+    // const prices = [getTarget()];
     const notes = getNotes();
     const promises = prices.map((price, i) =>
       addAlert({
@@ -243,9 +242,9 @@
    */
   if (IS_DEV === true) {
     router.goTo({ id: 'creating' });
-    symbolInput.value = 'BTC/USD';
+    symbolInput.value = 'LTC/USD';
     exchangeInput.value = 'GDAX';
-    targetInput.value = 1000;
+    targetInput.value = 150;
 
     // runLater(getAlerts, 50);
   }
