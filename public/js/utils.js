@@ -177,6 +177,7 @@
      */
     init(promises) {
       this.promises = promises;
+      return this;
     },
 
     execute() {

@@ -193,7 +193,7 @@
    * @return promise that resolves once the alert has been successfully added
    */
   const addAlert = ({ exchange, symbol, price, note }) => {
-    return fetch('addAlerts', {
+    return fetch('addAlert', {
       method: 'POST',
       headers,
       body: JSON.stringify({ exchange, symbol, price, note }),
@@ -212,7 +212,8 @@
     emptyElems(elemsToEmpty);
     const exchange = getExchange();
     const symbol = getSymbol();
-    const prices = getPrices();
+    // const prices = getPrices();
+    const prices = [getTarget()];
     const notes = getNotes();
     const promises = prices.map((price, i) =>
       addAlert({
