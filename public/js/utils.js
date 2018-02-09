@@ -175,45 +175,43 @@
    * simple helper object that runs through a queue of promises sequentially
    * doesn't currently handle caught errors
    */
-  const promiseQueue = {
-    promises: [],
+  const promiseQueue = () => {
+    /**
+     * the list of promises to execute
+     */
+    let _promises = [];
     /**
      * collection of responses or errors of each promise
      */
-    results: [],
+    const _results = [];
 
     /**
      * sets up the promises queue
      */
-    init(promises = []) {
-      this.promises = promises;
-      this.queueCount = promises.length;
-      return this;
-    },
+    const init = (promises = []) => {
+      _promises = [].concat(promises); // clone array
+      return Promise.resolve(this);
+    };
 
-    shouldContinue(completed) {
-      return completed.length !== this.queueCount;
-    },
-
-    execute(wait = 0) {
-      const self = this;
-      if (self.expectedCount === null) {
-        self.expectedCount = self.promises.length;
-      }
-      const nextPromise = self.promises.shift();
-      if (isThenable(nextPromise) && self.shouldContinue().bind(self)) {
+    const execute = (wait = 0) => {
+      const nextPromise = _promises.shift();
+      if (isThenable(nextPromise)) {
         return resolveLater(nextPromise, wait)
-          .then((response) => {
-            self.results.push(response);
-            return self.execute();
+          .then((result) => {
+            _results.push(result);
+            return execute(wait);
           })
           .catch((error) => {
-            self.results.push(error);
-            return self.execute();
+            _results.push(error);
+            return execute(wait);
           });
       }
-      return Promise.resolve(self.results);
-    },
+
+      // all promises have been executed
+      return Promise.all(_results);
+    };
+
+    return { init, execute };
   };
 
   window.Utils = () => ({

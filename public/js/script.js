@@ -5,6 +5,7 @@
   const IS_DEV = window.location.origin.includes('localhost');
 
   const API_WAIT_TIME = 1000 * 1.5; // 1.5 seconds
+  const STATUS_SUCCESS = 200;
 
   const checkStatus = async () => {
     fetch('health').then((res) => {
@@ -127,6 +128,11 @@
     return filtered;
   };
 
+  const displayEmptyResponse = () => {
+    spinner.hide();
+    alertsContainer.innerHTML = `<p class="empty-response">No alerts...</p>`;
+  };
+
   const update = (model = getModel()) => {
     if (model !== undefined && model.length !== 0) {
       emptyElems(elemsToEmpty);
@@ -135,6 +141,8 @@
         spinner.hide()
       );
       return model;
+    } else if (model.length === 0) {
+      displayEmptyResponse();
     } else if (model && model.errno !== undefined) {
       throw new Error(`Error: ${model.reason}`);
     }
@@ -153,7 +161,7 @@
       }),
     })
       .then((res) => {
-        if (res.ok === true) {
+        if (res.status === STATUS_SUCCESS) {
           return res.json();
         }
         return Promise.reject(res);
