@@ -100,6 +100,16 @@
       }, wait);
     });
 
+  const resolveLater = (promise, wait) =>
+    Promise.all([
+      promise,
+      new Promise((res) => {
+        setTimeout(() => {
+          res();
+        }, wait);
+      }),
+    ]);
+
   /**
    * @usage elems that have a `.route` class and comma separated list of route ids in `data-route-ids`
    * will be shown/hidden based on a `a.router-link[data-route-id]`
@@ -175,24 +185,31 @@
     /**
      * sets up the promises queue
      */
-    init(promises) {
+    init(promises = []) {
       this.promises = promises;
+      this.queueCount = promises.length;
       return this;
     },
 
-    execute() {
+    shouldContinue(completed) {
+      return completed.length !== this.queueCount;
+    },
+
+    execute(wait = 0) {
       const self = this;
-      const expectedResultsCount = self.promises.length;
-      const nextPromise = self.promises.unshift();
-      if (isThenable(nextPromise) && self.results.length !== expectedResultsCount) {
-        return nextPromise
+      if (self.expectedCount === null) {
+        self.expectedCount = self.promises.length;
+      }
+      const nextPromise = self.promises.shift();
+      if (isThenable(nextPromise) && self.shouldContinue().bind(self)) {
+        return resolveLater(nextPromise, wait)
           .then((response) => {
             self.results.push(response);
-            self.execute();
+            return self.execute();
           })
           .catch((error) => {
             self.results.push(error);
-            self.execute();
+            return self.execute();
           });
       }
       return Promise.resolve(self.results);
@@ -204,6 +221,7 @@
     emptyElems,
     listenForEnter,
     runLater,
+    resolveLater,
     createRouter,
     isThenable,
     promiseQueue,

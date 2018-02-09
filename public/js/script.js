@@ -224,7 +224,7 @@
       })
     );
     const queue = promiseQueue.init(promises);
-    return queue.execute();
+    return queue.execute(500);
   };
 
   /**

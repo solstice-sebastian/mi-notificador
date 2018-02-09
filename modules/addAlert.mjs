@@ -20,8 +20,6 @@ const addAlert = ({ headers, price, symbol, exchange, note }) => {
       alert_note: note,
     };
 
-    console.log(`body`, JSON.stringify(body));
-
     return fetch(endpoint, {
       method,
       headers,
