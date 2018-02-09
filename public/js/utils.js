@@ -154,5 +154,57 @@
     return router;
   };
 
-  window.Utils = () => ({ buildTable, emptyElems, listenForEnter, runLater, createRouter });
+  const isThenable = (obj) => {
+    if (typeof obj.then === 'function' && typeof obj.catch === 'function') {
+      return true;
+    }
+    return false;
+  };
+
+  /**
+   * simple helper object that runs through a queue of promises sequentially
+   * doesn't currently handle caught errors
+   */
+  const promiseQueue = {
+    promises: [],
+    /**
+     * collection of responses or errors of each promise
+     */
+    results: [],
+
+    /**
+     * sets up the promises queue
+     */
+    init(promises) {
+      this.promises = promises;
+    },
+
+    execute() {
+      const self = this;
+      const expectedResultsCount = self.promises.length;
+      const nextPromise = self.promises.unshift();
+      if (isThenable(nextPromise) && self.results.length !== expectedResultsCount) {
+        return nextPromise
+          .then((response) => {
+            self.results.push(response);
+            self.execute();
+          })
+          .catch((error) => {
+            self.results.push(error);
+            self.execute();
+          });
+      }
+      return Promise.resolve(self.results);
+    },
+  };
+
+  window.Utils = () => ({
+    buildTable,
+    emptyElems,
+    listenForEnter,
+    runLater,
+    createRouter,
+    isThenable,
+    promiseQueue,
+  });
 })();

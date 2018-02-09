@@ -1,5 +1,5 @@
 (() => {
-  const { emptyElems, /* listenForEnter, */ runLater, createRouter } = window.Utils();
+  const { emptyElems, promiseQueue, runLater, createRouter } = window.Utils();
   const { buildMDLTable, getSelectedRows, createSpinner, createDialog } = window.MDLHelpers();
 
   const IS_DEV = window.location.origin.includes('localhost');
@@ -135,6 +135,8 @@
         spinner.hide()
       );
       return model;
+    } else if (model && model.errno !== undefined) {
+      throw new Error(`Error: ${model.reason}`);
     }
     return null;
   };
@@ -186,34 +188,43 @@
       .catch((err) => console.log(`err:`, err));
   };
 
+  /**
+   * add single alert
+   * @return promise that resolves once the alert has been successfully added
+   */
+  const addAlert = ({ exchange, symbol, price, note }) => {
+    return fetch('addAlerts', {
+      method: 'POST',
+      headers,
+      body: JSON.stringify({ exchange, symbol, price, note }),
+    });
+  };
+
   const addAlerts = () => {
     if (getExchange() === '' || getSymbol() === '' || getTarget() === '') {
       return dialog.display({
         title: 'Error',
-        content: 'All fields are required',
+        content: 'All fields are required to add alerts',
       });
     }
 
     spinner.show();
     emptyElems(elemsToEmpty);
-    return fetch('addAlerts', {
-      method: 'POST',
-      headers,
-      body: JSON.stringify({
-        exchange: getExchange(),
-        symbol: getSymbol(),
-        prices: getPrices(),
-        notes: getNotes(),
-      }),
-    })
-      .then((res) => {
-        if (res.ok === true) {
-          return res.json();
-        }
-        return Promise.reject(res);
+    const exchange = getExchange();
+    const symbol = getSymbol();
+    const prices = getPrices();
+    const notes = getNotes();
+    const promises = prices.map((price, i) =>
+      addAlert({
+        headers,
+        price,
+        symbol,
+        exchange,
+        note: notes[i],
       })
-      .then(getAlerts)
-      .catch((err) => console.log(`err:`, err));
+    );
+    const queue = promiseQueue.init(promises);
+    return queue.execute();
   };
 
   /**

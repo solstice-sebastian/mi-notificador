@@ -34,15 +34,6 @@ app.post('/getAlerts', (req, res) => {
     .catch((err) => res.send(err));
 });
 
-app.post('/deleteAlert', (req, res) => {
-  const { alertId } = req.body;
-  deleteAlert({ headers, alertId })
-    .then((alerts) => {
-      res.send(alerts);
-    })
-    .catch((err) => res.send(err));
-});
-
 app.post('/deleteAlerts', (req, res) => {
   const { alertIds } = req.body;
   const promises = alertIds.map((alertId) => deleteAlert({ headers, alertId }));
@@ -50,16 +41,15 @@ app.post('/deleteAlerts', (req, res) => {
   res.send(result);
 });
 
-app.post('/addAlerts', (req, res) => {
-  const { prices, symbol, exchange, notes } = req.body;
-  const promises = prices.map((price, i) =>
-    addAlert({ headers, price, symbol, exchange, note: notes[i] })
-  );
-  const result = Promise.all(promises).catch((err) => res.send(err));
-  res.send(result);
-  // const alerts = prices.map((price, i) => `price: ${price} - note: ${notes[i]}`);
-  // console.log(`alerts:`, alerts);
-  // res.send(alerts);
+app.post('/addAlert', (req, res) => {
+  const { price, symbol, exchange, note } = req.body;
+  addAlert({ headers, price, symbol, exchange, note })
+    .then((alert) => {
+      res.send(alert);
+    })
+    .catch((err) => {
+      console.log(`err:`, err);
+    });
 });
 
 // start server

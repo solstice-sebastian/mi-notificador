@@ -14,7 +14,11 @@ const filter = ({ data, options }) => {
 
   const filtered = alerts
     .filter(
-      (alert) => (exchange ? alert.exch_name.toLowerCase().includes(exchange.toLowerCase()) : true)
+      (alert) =>
+        exchange
+          ? alert.exch_name.toLowerCase().includes(exchange.toLowerCase()) ||
+            alert.exch_code.toLowerCase().includes(exchange.toLowerCase())
+          : true
     )
     .filter(
       (alert) => (symbol ? alert.mkt_name.toLowerCase().includes(symbol.toLowerCase()) : true)
