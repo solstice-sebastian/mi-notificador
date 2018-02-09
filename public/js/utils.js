@@ -186,15 +186,21 @@
     const _results = [];
 
     /**
+     * the queue object
+     * @public
+     */
+    let queue;
+
+    /**
      * sets up the promises queue
      */
     const init = (promises = []) => {
       _promises = [].concat(promises); // clone array
-      return Promise.resolve(this);
+      return Promise.resolve(queue);
     };
 
     const execute = (wait = 0) => {
-      const nextPromise = _promises.shift();
+      const nextPromise = _promises.shift() || {};
       if (isThenable(nextPromise)) {
         return resolveLater(nextPromise, wait)
           .then((result) => {
@@ -208,10 +214,13 @@
       }
 
       // all promises have been executed
-      return Promise.all(_results);
+      return new Promise((res) => {
+        Promise.all(_results).then(() => res(_results));
+      });
     };
 
-    return { init, execute };
+    queue = { init, execute };
+    return queue;
   };
 
   window.Utils = () => ({

@@ -6,6 +6,7 @@
 
   const API_WAIT_TIME = 1000 * 1.5; // 1.5 seconds
   const STATUS_SUCCESS = 200;
+  const STATUS_RATE_EXCEEDED = 500;
 
   const checkStatus = async () => {
     fetch('health').then((res) => {
@@ -97,7 +98,13 @@
   // };
 
   const getModifiers = () => [-0.08, -0.05, -0.03, -0.01, 0, 0.01, 0.03, 0.05, 0.08];
-  const getNotes = () => getModifiers().map((mod) => `${mod * 100}% from target: ${getTarget()}`);
+  const getNotes = () =>
+    getModifiers().map((mod) => {
+      if (mod > 0) {
+        return `${mod * 100}% UP from target: ${getTarget()}`;
+      }
+      return `${mod * 100}% DOWN from target: ${getTarget()}`;
+    });
 
   const getPrices = () => {
     const modifiers = getModifiers();
@@ -231,8 +238,23 @@
         note: notes[i],
       })
     );
-    const queue = promiseQueue.init(promises);
-    return queue.execute(500);
+    const queue = promiseQueue();
+    return queue
+      .init(promises)
+      .then(() => queue.execute(500))
+      .then((results) => {
+        // rate limit hit
+        const returned = results.filter((result) => result[0].status === STATUS_RATE_EXCEEDED);
+        // try again in a
+        window.setTimeout(
+          () =>
+            queue
+              .init(returned)
+              .then(() => queue.execute(500))
+              .then(getAlerts),
+          2000
+        );
+      });
   };
 
   /**
