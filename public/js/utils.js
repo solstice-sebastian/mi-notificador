@@ -222,6 +222,32 @@
     return queue;
   };
 
+  const profiler = () => {
+    const model = {
+      startMs: 0,
+      stopMs: 0,
+      diffMs: 0,
+      inSeconds() {
+        return (this.diffMs / 1000).toFixed(2);
+      },
+      inMilliseconds() {
+        return this.diffMs;
+      },
+      log() {
+        return console.log('profiler: ', `diff: ${this.inMilliseconds()}ms | ${this.inSeconds()}s`);
+      },
+    };
+    const start = () => {
+      model.startMs = new Date().getTime();
+    };
+    const stop = () => {
+      model.stopMs = new Date().getTime();
+    };
+    const get = () => model;
+
+    return { start, stop, get };
+  };
+
   window.Utils = () => ({
     buildTable,
     emptyElems,
@@ -231,5 +257,6 @@
     createRouter,
     isThenable,
     promiseQueue,
+    profiler,
   });
 })();
