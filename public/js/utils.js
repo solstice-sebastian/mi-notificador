@@ -100,15 +100,14 @@
       }, wait);
     });
 
-  const resolveLater = (promise, wait) =>
-    Promise.all([
-      promise,
-      new Promise((res) => {
-        setTimeout(() => {
-          res();
-        }, wait);
-      }),
-    ]);
+  const resolveLater = (promise, wait) => {
+    const later = new Promise((res) => {
+      setTimeout(() => {
+        res(promise);
+      }, wait);
+    });
+    return later;
+  };
 
   /**
    * @usage elems that have a `.route` class and comma separated list of route ids in `data-route-ids`
