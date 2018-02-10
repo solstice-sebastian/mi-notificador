@@ -190,6 +190,8 @@
      */
     let queue;
 
+    const profiler = window.Profiler();
+
     /**
      * sets up the promises queue
      */
@@ -198,54 +200,34 @@
       return Promise.resolve(queue);
     };
 
+    // eslint-disable-next-line consistent-return
     const execute = (wait = 0) => {
-      const nextPromise = _promises.shift() || {};
-      if (isThenable(nextPromise)) {
-        return resolveLater(nextPromise, wait)
+      profiler.start();
+      const nextPromise = _promises.shift();
+      if (nextPromise === undefined) {
+        // all promises have been executed
+        return Promise.resolve(_results);
+      } else if (isThenable(nextPromise) === false) {
+        throw new Error(
+          `promiseQueue: expected a promise but received ${typeof nextPromise} instead`
+        );
+      } else {
+        resolveLater(nextPromise, wait)
           .then((result) => {
+            profiler.log();
             _results.push(result);
-            return execute(wait);
+            execute(wait);
           })
           .catch((error) => {
+            profiler.log();
             _results.push(error);
-            return execute(wait);
+            execute(wait);
           });
       }
-
-      // all promises have been executed
-      return new Promise((res) => {
-        Promise.all(_results).then(() => res(_results));
-      });
     };
 
     queue = { init, execute };
     return queue;
-  };
-
-  const profiler = () => {
-    const model = {
-      startMs: 0,
-      stopMs: 0,
-      diffMs: 0,
-      inSeconds() {
-        return (this.diffMs / 1000).toFixed(2);
-      },
-      inMilliseconds() {
-        return this.diffMs;
-      },
-      log() {
-        return console.log('profiler: ', `diff: ${this.inMilliseconds()}ms | ${this.inSeconds()}s`);
-      },
-    };
-    const start = () => {
-      model.startMs = new Date().getTime();
-    };
-    const stop = () => {
-      model.stopMs = new Date().getTime();
-    };
-    const get = () => model;
-
-    return { start, stop, get };
   };
 
   window.Utils = () => ({
@@ -257,6 +239,5 @@
     createRouter,
     isThenable,
     promiseQueue,
-    profiler,
   });
 })();
