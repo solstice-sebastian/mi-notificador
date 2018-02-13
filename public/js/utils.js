@@ -178,30 +178,13 @@
     const profiler = window.Profiler();
     const promises = [].concat(inputPromises);
 
-    // const run = () => {
-    //   profiler.start();
-    //   return promises.reduce((acc, curr) => {
-    //     // console.log(`acc:`, acc);
-    //     // console.log(`curr:`, curr);
-    //     return acc.then((results) => {
-    //       // console.log(`results:`, results);
-    //       return curr.then((currResult) => {
-    //         const output = [...results, currResult];
-    //         // console.log(`output:`, output);
-    //         return output;
-    //       });
-    //     });
-    //   }, Promise.resolve([]));
-    // };
-
     const run = () => {
       profiler.start();
       return promises.reduce(
         (acc, curr) =>
-          acc.then((results) =>
+          acc.then((responses) =>
             curr.then((currResult) => {
-              const output = [...results, currResult];
-              // console.log(`output:`, output);
+              const output = [...responses, currResult];
               return output;
             })
           ),
@@ -209,27 +192,39 @@
       );
     };
 
-    const runWithPause = (wait = 0) => {
-      const results = [];
+    return { run };
+  };
+
+  const promiseFactoryQueue = (inputFactories) => {
+    const factories = [].concat(inputFactories);
+    const results = [];
+    const profiler = window.Profiler();
+
+    const run = (wait = 0) => {
       if (profiler.isRunning() === false) {
         profiler.start();
       }
       return new Promise((res) => {
-        const next = promises.shift();
+        const next = factories.shift();
         if (next === undefined) {
           profiler.log('last promise');
           return res(results);
-        } else if (isThenable(next) === false) {
+        } else if (typeof next !== 'function') {
           throw new Error(
-            `promiseQueue#runWithPause expected Promise but received ${typeof next} instead`
+            `promiseQueue#runWithPause expected PromiseFactory but received ${typeof next} instead`
           );
         } else {
-          return Promise.resolve(window.setTimeout(() => next.then(runWithPause(wait)), wait));
+          return window.setTimeout(() => {
+            next().then((response) => {
+              results.push(response);
+              run(wait);
+            });
+          }, wait);
         }
       });
     };
 
-    return { run, runWithPause };
+    return { run };
   };
 
   window.Utils = () => ({
@@ -241,5 +236,6 @@
     createRouter,
     isThenable,
     promiseQueue,
+    promiseFactoryQueue,
   });
 })();
