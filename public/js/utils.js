@@ -163,7 +163,7 @@
     return router;
   };
 
-  const isThenable = (obj) => {
+  const isThenable = (obj = {}) => {
     if (typeof obj.then === 'function' && typeof obj.catch === 'function') {
       return true;
     }
@@ -174,60 +174,62 @@
    * simple helper object that runs through a queue of promises sequentially
    * doesn't currently handle caught errors
    */
-  const promiseQueue = () => {
-    /**
-     * the list of promises to execute
-     */
-    let _promises = [];
-    /**
-     * collection of responses or errors of each promise
-     */
-    const _results = [];
-
-    /**
-     * the queue object
-     * @public
-     */
-    let queue;
-
+  const promiseQueue = (inputPromises) => {
     const profiler = window.Profiler();
+    const promises = [].concat(inputPromises);
 
-    /**
-     * sets up the promises queue
-     */
-    const init = (promises = []) => {
-      _promises = [].concat(promises); // clone array
-      return Promise.resolve(queue);
-    };
+    // const run = () => {
+    //   profiler.start();
+    //   return promises.reduce((acc, curr) => {
+    //     // console.log(`acc:`, acc);
+    //     // console.log(`curr:`, curr);
+    //     return acc.then((results) => {
+    //       // console.log(`results:`, results);
+    //       return curr.then((currResult) => {
+    //         const output = [...results, currResult];
+    //         // console.log(`output:`, output);
+    //         return output;
+    //       });
+    //     });
+    //   }, Promise.resolve([]));
+    // };
 
-    // eslint-disable-next-line consistent-return
-    const execute = (wait = 0) => {
+    const run = () => {
       profiler.start();
-      const nextPromise = _promises.shift();
-      if (nextPromise === undefined) {
-        // all promises have been executed
-        return Promise.resolve(_results);
-      } else if (isThenable(nextPromise) === false) {
-        throw new Error(
-          `promiseQueue: expected a promise but received ${typeof nextPromise} instead`
-        );
-      } else {
-        resolveLater(nextPromise, wait)
-          .then((result) => {
-            profiler.log();
-            _results.push(result);
-            execute(wait);
-          })
-          .catch((error) => {
-            profiler.log();
-            _results.push(error);
-            execute(wait);
-          });
-      }
+      return promises.reduce(
+        (acc, curr) =>
+          acc.then((results) =>
+            curr.then((currResult) => {
+              const output = [...results, currResult];
+              // console.log(`output:`, output);
+              return output;
+            })
+          ),
+        Promise.resolve([])
+      );
     };
 
-    queue = { init, execute };
-    return queue;
+    const runWithPause = (wait = 0) => {
+      const results = [];
+      if (profiler.isRunning() === false) {
+        profiler.start();
+      }
+      return new Promise((res) => {
+        const next = promises.shift();
+        if (next === undefined) {
+          profiler.log('last promise');
+          return res(results);
+        } else if (isThenable(next) === false) {
+          throw new Error(
+            `promiseQueue#runWithPause expected Promise but received ${typeof next} instead`
+          );
+        } else {
+          return Promise.resolve(window.setTimeout(() => next.then(runWithPause(wait)), wait));
+        }
+      });
+    };
+
+    return { run, runWithPause };
   };
 
   window.Utils = () => ({

@@ -6,7 +6,7 @@
 
   const API_WAIT_TIME = 1000 * 1.5; // 1.5 seconds
   const STATUS_SUCCESS = 200;
-  const STATUS_RATE_EXCEEDED = 500;
+  // const STATUS_RATE_EXCEEDED = 500;
 
   const checkStatus = async () => {
     fetch('health').then((res) => {
@@ -30,6 +30,8 @@
   const links = Array.from(document.querySelectorAll('.router-link'));
   const router = createRouter({ links });
   router.goTo({ id: 'home' });
+
+  const profiler = window.Profiler();
 
   const alertsContainer = document.getElementById('alerts');
 
@@ -97,8 +99,8 @@
   //   return [-0.08, -0.05, -0.03, -0.01, 1, 0.08, 0.05, 0.03, 0.01];
   // };
 
-  // const getModifiers = () => [-0.08, -0.05, -0.03, -0.01, 0, 0.01, 0.03, 0.05, 0.08];
-  const getModifiers = () => [-0.01, 0, 0.01];
+  const getModifiers = () => [-0.08, -0.05, -0.03, -0.01, 0, 0.01, 0.03, 0.05, 0.08];
+  // const getModifiers = () => [-0.01, 0, 0.01];
   const getNotes = () =>
     getModifiers().map((mod) => {
       if (mod > 0) {
@@ -241,22 +243,22 @@
         note: notes[i],
       })
     );
-    const queue = promiseQueue();
+    const queue = promiseQueue(promises);
+    profiler.start();
+    // return queue
+    //   .run(500)
+    //   .then(() => profiler.log('addAlert finished'))
+    //   .then(getAlerts)
+    //   .catch((error) => {
+    //     console.log(`error:`, error);
+    //   });
+
     return queue
-      .init(promises)
-      .then(() => queue.execute(500))
-      .then((results) => {
-        // rate limit hit
-        // const returned = results.filter((result) => result[0].status === STATUS_RATE_EXCEEDED);
-        // // try again in a
-        // window.setTimeout(
-        //   () =>
-        //     queue
-        //       .init(returned)
-        //       .then(() => queue.execute(500))
-        //       .then(getAlerts),
-        //   2000
-        // );
+      .runWithPause(500)
+      .then(() => profiler.log('addAlert finished'))
+      .then(getAlerts)
+      .catch((error) => {
+        console.log(`error:`, error);
       });
   };
 
