@@ -205,28 +205,30 @@
         profiler.start();
       }
       return new Promise((res) => {
-        const next = factories.shift();
-        if (next === undefined) {
-          profiler.log('last promise');
-          return res(results);
-        } else if (typeof next !== 'function') {
-          throw new Error(
-            `promiseQueue#runWithPause expected PromiseFactory but received ${typeof next} instead`
-          );
-        } else {
-          return window.setTimeout(() => {
-            next().then((response) => {
-              results.push(response);
-              run(wait);
-            });
-          }, wait);
-        }
+        const _run = () => {
+          const next = factories.shift();
+          if (next === undefined) {
+            profiler.log('last promise');
+            return res(results);
+          } else if (typeof next !== 'function') {
+            throw new Error(
+              `promiseQueue#runWithPause expected PromiseFactory but received ${typeof next} instead`
+            );
+          } else {
+            return window.setTimeout(() => {
+              next().then((response) => {
+                results.push(response);
+                _run(wait);
+              });
+            }, wait);
+          }
+        };
+        _run();
       });
     };
 
     return { run };
   };
-
   window.Utils = () => ({
     buildTable,
     emptyElems,
