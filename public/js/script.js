@@ -125,6 +125,9 @@
   };
 
   const filterAlerts = (model) => {
+    if (Array.isArray(model) === false) {
+      throw new Error(`filterAlerts expected Array but received '${typeof model}' instead`);
+    }
     const symbol = getSymbol();
     const exchange = getExchange();
     const filtered = model
@@ -191,9 +194,9 @@
       table: document.querySelector('#alerts table'),
     });
     emptyElems(elemsToEmpty);
-    const alertIds = selectedRows.map((row) => row.getAttribute('data-record-id'));
+    const selectedAlertIds = selectedRows.map((row) => row.getAttribute('data-record-id'));
     // split into lists of <= 5
-    const listOfLists = alertIds.reduce(
+    const listOfLists = selectedAlertIds.reduce(
       (acc, curr) => {
         const lastList = acc[acc.length - 1];
         if (lastList.length < 6) {
@@ -208,24 +211,18 @@
       [[]]
     );
 
-    console.log(`listOfLists:`, listOfLists);
-
-    // const factories = alertIds.map((alertId) => () =>
-    //   fetch('deleteAlerts', {
-    //     method: 'POST',
-    //     headers,
-    //     body: JSON.stringify({ alertIds }),
-    //   })
-    //     .then((response) => response.json())
-    //     .then((response) => {
-    //       spinner.hide();
-    //       if (response && response.err_msg) {
-    //         return Promise.reject(new Error(response.err_msg));
-    //       }
-    //       return Promise.resolve(runLater(getAlerts, API_WAIT_TIME));
-    //     })
-    //     .catch((err) => console.log(`err:`, err))
-    // );
+    const factories = listOfLists.map((alertIds) => () =>
+      fetch('deleteAlerts', {
+        method: 'POST',
+        headers,
+        body: JSON.stringify({ alertIds }),
+      })
+    );
+    const queue = promiseFactoryQueue(factories);
+    queue
+      .run(250)
+      .then(() => getAlerts)
+      .catch((err) => console.log(`err:`, err));
   };
 
   /**
