@@ -72,7 +72,7 @@
     });
 
     // methods
-    dialog.display = ({ title, content, classList = [], isModal = true, }) => {
+    dialog.display = ({ title, content, classList = [], isModal = true }) => {
       titleElem.innerText = title;
       contentElem.innerText = content;
       dialog.classList.add(...classList);

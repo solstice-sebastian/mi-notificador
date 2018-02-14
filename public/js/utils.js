@@ -217,7 +217,7 @@
           } else {
             return window.setTimeout(() => {
               next().then((response) => {
-                results.push(response);
+                response.json().then((json) => results.push(json));
                 _run(wait);
               });
             }, wait);

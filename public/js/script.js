@@ -1,5 +1,5 @@
 (() => {
-  const { emptyElems, promiseFactoryQueue, runLater, createRouter } = window.Utils();
+  const { emptyElems, promiseFactoryQueue, createRouter } = window.Utils();
   const { buildMDLTable, getSelectedRows, createSpinner, createDialog } = window.MDLHelpers();
 
   const IS_DEV = window.location.origin.includes('localhost');
@@ -250,7 +250,7 @@
     const symbol = getSymbol();
     const prices = getPrices();
     const notes = getNotes();
-    const promises = prices.map((price, i) => () =>
+    const factories = prices.map((price, i) => () =>
       addAlert({
         headers,
         price,
@@ -259,9 +259,19 @@
         note: notes[i],
       })
     );
-    const queue = promiseFactoryQueue(promises);
+    const queue = promiseFactoryQueue(factories);
     return queue
-      .run(250)
+      .run(API_WAIT_TIME / factories.length)
+      .then((results) => {
+        // get errors
+        const errors = results.filter((result) => result.err_msg !== undefined);
+        if (errors.length !== 0) {
+          dialog.display({
+            title: `${errors.length} Errors :(`,
+            content: `${errors.map((error) => error.err_msg).join('\n')}`,
+          });
+        }
+      })
       .then(getAlerts)
       .catch((error) => {
         console.log(`error:`, error);
@@ -283,9 +293,9 @@
    */
   if (IS_DEV === true) {
     router.goTo({ id: 'creating' });
-    symbolInput.value = 'LTC/USD';
-    exchangeInput.value = 'GDAX';
-    targetInput.value = 150;
+    symbolInput.value = 'BLZ/BTC';
+    exchangeInput.value = 'Binance';
+    targetInput.value = 0.000068;
 
     // runLater(getAlerts, 50);
   }
