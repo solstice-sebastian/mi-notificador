@@ -116,11 +116,11 @@
       if (modifier < 0) {
         const diff = target * Math.abs(modifier);
         const result = target - diff;
-        return result > 0 ? result.toFixed(2) : result.toFixed(8);
+        return Math.abs(result) > 1 ? result.toFixed(2) : result.toFixed(8);
       }
       const diff = target * modifier;
       const result = target + diff;
-      return result > 0 ? result.toFixed(2) : result.toFixed(8);
+      return Math.abs(result) > 1 ? result.toFixed(2) : result.toFixed(8);
     });
   };
 

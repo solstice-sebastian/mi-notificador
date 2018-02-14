@@ -21,15 +21,9 @@ const codeForInput = ({ input, exchanges = [] }) => {
     throw new Error(`codeForInput expected list of exchanges. Received '${exchanges}' instead`);
   }
 
-  let code;
-
-  exchanges.forEach((exchange) => {
-    if (exchange.exch_name === input || exchange.exch_code === input) {
-      code = exchange.exch_code;
-      return code;
-    }
-    return null;
-  });
+  const code = exchanges.find(
+    (exchange) => exchange.exch_name === input || exchange.exch_code === input
+  ).exch_code;
 
   if (code === undefined) {
     throw new Error(`No exchange found for '${input}'`);
