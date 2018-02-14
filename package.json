@@ -6,7 +6,7 @@
   "scripts": {
     "dev-exp": "nodemon --experimental-modules app.mjs",
     "dev": "nodemon app.mjs",
-    "test": "nodemon utils.js"
+    "test": "node tests/utils.js"
   },
   "author": "Aric Allen",
   "license": "MIT",

@@ -249,7 +249,17 @@
     return 0;
   };
 
-  if (window !== undefined && document !== undefined) {
+  if (module !== undefined && module.exports !== undefined) {
+    module.exports = {
+      runLater,
+      resolveLater,
+      isThenable,
+      promiseQueue,
+      promiseFactoryQueue,
+      isEmpty,
+      findSignificantNumbersPlace,
+    };
+  } else if (window !== undefined && document !== undefined) {
     window.Utils = () => ({
       buildTable,
       emptyElems,
@@ -263,15 +273,5 @@
       isEmpty,
       findSignificantNumbersPlace,
     });
-  } else if (module !== undefined && module.exports !== undefined) {
-    module.exports = {
-      runLater,
-      resolveLater,
-      isThenable,
-      promiseQueue,
-      promiseFactoryQueue,
-      isEmpty,
-      findSignificantNumbersPlace,
-    };
   }
 })();
