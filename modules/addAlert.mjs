@@ -1,5 +1,7 @@
-import fetch from 'node-fetch';
-import Exchanges from './exchanges.mjs';
+// import fetch from 'node-fetch';
+// import Exchanges from './exchanges.mjs';
+const fetch = require('node-fetch');
+const Exchanges = require('./exchanges.mjs');
 
 const method = 'POST';
 const endpoint = 'https://api.coinigy.com/api/v1/addAlert';
@@ -30,4 +32,5 @@ const addAlert = ({ headers, price, symbol, exchange, note }) => {
   });
 };
 
-export default addAlert;
+// export default addAlert;
+module.exports = addAlert;

@@ -1,4 +1,5 @@
-import fetch from 'node-fetch';
+// import fetch from 'node-fetch';
+const fetch = require('node-fetch');
 
 const method = 'POST';
 const endpoint = 'https://api.coinigy.com/api/v1/exchanges';
@@ -9,14 +10,14 @@ let _headers = null;
 const get = () =>
   fetch(endpoint, { method, headers: _headers })
     .then((response) => response.json())
-    .then((exchanges) => {
-      _exchanges = exchanges;
-      return exchanges;
+    .then(({ data }) => {
+      _exchanges = data;
+      return _exchanges;
     })
     .catch((err) => err);
 
 const codeForInput = ({ input, exchanges = [] }) => {
-  if (exchanges === undefined || exchanges.err) {
+  if (exchanges === undefined || Array.isArray(exchanges) === false) {
     throw new Error(`codeForInput expected list of exchanges. Received '${exchanges}' instead`);
   }
 
@@ -54,4 +55,5 @@ const init = ({ headers }) => {
 
 const Exchanges = { init };
 
-export default Exchanges;
+// export default Exchanges;
+module.exports = Exchanges;

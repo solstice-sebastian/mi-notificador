@@ -1,9 +1,16 @@
-import express from 'express';
-import bodyParser from 'body-parser';
-import keys from './private/keys.mjs';
-import getAlerts from './modules/getAlerts.mjs';
-import deleteAlert from './modules/deleteAlert.mjs';
-import addAlert from './modules/addAlert.mjs';
+// import express from 'express';
+// import bodyParser from 'body-parser';
+// import keys from './private/keys.mjs';
+// import getAlerts from './modules/getAlerts.mjs';
+// import deleteAlert from './modules/deleteAlert.mjs';
+// import addAlert from './modules/addAlert.mjs';
+
+const express = require('express');
+const bodyParser = require('body-parser');
+const keys = require('./private/keys.mjs');
+const getAlerts = require('./modules/getAlerts.mjs');
+const deleteAlert = require('./modules/deleteAlert.mjs');
+const addAlert = require('./modules/addAlert.mjs');
 
 const { apiKey, apiSecret } = keys;
 

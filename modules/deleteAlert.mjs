@@ -1,4 +1,5 @@
-import fetch from 'node-fetch';
+// import fetch from 'node-fetch';
+const fetch = require('node-fetch');
 
 const method = 'POST';
 const endpoint = 'https://api.coinigy.com/api/v1/deleteAlert';
@@ -23,4 +24,5 @@ const deleteAlert = ({ headers, alertId }) => {
     .catch((err) => err);
 };
 
-export default deleteAlert;
+// export default deleteAlert;
+module.exports = deleteAlert;

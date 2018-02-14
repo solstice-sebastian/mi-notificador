@@ -1,5 +1,5 @@
 (() => {
-  const { emptyElems, promiseQueue, runLater, createRouter } = window.Utils();
+  const { emptyElems, promiseFactoryQueue, runLater, createRouter } = window.Utils();
   const { buildMDLTable, getSelectedRows, createSpinner, createDialog } = window.MDLHelpers();
 
   const IS_DEV = window.location.origin.includes('localhost');
@@ -234,7 +234,7 @@
     const prices = getPrices();
     // const prices = [getTarget()];
     const notes = getNotes();
-    const promises = prices.map((price, i) =>
+    const promises = prices.map((price, i) => () =>
       addAlert({
         headers,
         price,
@@ -243,18 +243,10 @@
         note: notes[i],
       })
     );
-    const queue = promiseQueue(promises);
+    const queue = promiseFactoryQueue(promises);
     profiler.start();
-    // return queue
-    //   .run(500)
-    //   .then(() => profiler.log('addAlert finished'))
-    //   .then(getAlerts)
-    //   .catch((error) => {
-    //     console.log(`error:`, error);
-    //   });
-
     return queue
-      .runWithPause(500)
+      .run(500)
       .then(() => profiler.log('addAlert finished'))
       .then(getAlerts)
       .catch((error) => {

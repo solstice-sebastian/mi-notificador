@@ -4,7 +4,8 @@
   "description": "helps easy alert setting based on fib percentages and entry price ",
   "main": "app.mjs",
   "scripts": {
-    "dev": "nodemon --experimental-modules app.mjs"
+    "dev-exp": "nodemon --experimental-modules app.mjs",
+    "dev": "nodemon app.mjs"
   },
   "author": "Aric Allen",
   "license": "MIT",

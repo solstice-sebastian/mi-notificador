@@ -1,4 +1,5 @@
-import fetch from 'node-fetch';
+// import fetch from 'node-fetch';
+const fetch = require('node-fetch');
 
 const method = 'POST';
 const endpoint = 'https://api.coinigy.com/api/v1/alerts';
@@ -45,4 +46,5 @@ const getAlerts = ({ headers, options = {} }) =>
     .then(({ data }) => filter({ data, options }))
     .catch((err) => err);
 
-export default getAlerts;
+// export default getAlerts;
+module.exports = getAlerts;
