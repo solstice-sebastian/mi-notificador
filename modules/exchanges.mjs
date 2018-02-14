@@ -40,7 +40,7 @@ const codeForInput = ({ input, exchanges = [] }) => {
 
 const getCode = ({ input }) => {
   if (_exchanges.length === 0) {
-    return get().then(({ data }) => codeForInput({ input, exchanges: data }));
+    return get().then((exchanges) => codeForInput({ input, exchanges }));
   }
   return Promise.resolve(codeForInput({ input, exchanges: _exchanges }));
 };
