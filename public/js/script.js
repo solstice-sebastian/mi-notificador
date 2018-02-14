@@ -212,16 +212,18 @@
     );
 
     const factories = listOfLists.map((alertIds) => () =>
-      fetch('deleteAlerts', {
-        method: 'POST',
-        headers,
-        body: JSON.stringify({ alertIds }),
+      new Promise((res) => {
+        fetch('deleteAlerts', {
+          method: 'POST',
+          headers,
+          body: JSON.stringify({ alertIds }),
+        }).then(() => res());
       })
     );
     const queue = promiseFactoryQueue(factories);
     queue
-      .run(250)
-      .then(() => getAlerts)
+      .run(API_WAIT_TIME / factories.length)
+      .then(getAlerts)
       .catch((err) => console.log(`err:`, err));
   };
 
@@ -293,7 +295,7 @@
    */
   if (IS_DEV === true) {
     router.goTo({ id: 'creating' });
-    symbolInput.value = 'BLZ/BTC';
+    symbolInput.value = 'OMG/BTC';
     exchangeInput.value = 'Binance';
     targetInput.value = 0.000068;
 

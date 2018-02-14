@@ -217,7 +217,11 @@
           } else {
             return window.setTimeout(() => {
               next().then((response) => {
-                response.json().then((json) => results.push(json));
+                if (response && typeof response.json === 'function') {
+                  response.json().then((json) => results.push(json));
+                } else {
+                  results.push(response);
+                }
                 _run(wait);
               });
             }, wait);
