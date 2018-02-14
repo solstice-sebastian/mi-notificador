@@ -40,6 +40,10 @@ a.button {
   height: 60px;
 }
 
+.mdl-button--danger {
+  background-color: rgb(244, 67, 54);
+}
+
 .page-content {
   min-width: 960px;
   width: 100%;
