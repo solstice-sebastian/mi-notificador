@@ -35,13 +35,19 @@
 
   const alertsContainer = document.getElementById('alerts');
 
+  // inputs
   const exchangeInput = document.getElementById('exchange');
   const symbolInput = document.getElementById('symbol');
   const targetInput = document.getElementById('target');
 
+  // buttons
   const addAlertsButton = document.getElementById('add-alerts');
   const getAlertsButton = document.getElementById('get-alerts');
   const deleteAlertsButton = document.getElementById('delete-alerts');
+
+  // toggles
+  const bigEvensToggle = document.getElementById('big-evens');
+  const fibRangeToggle = document.getElementById('fib-range');
 
   const spinnerContainer = document.getElementById('spinner-container');
   const spinner = createSpinner({ container: spinnerContainer });
@@ -94,15 +100,20 @@
     return target;
   };
 
+  const getPriceOptions = () => ({
+    isBigEvensChecked: bigEvensToggle.checked,
+    isFibRangeChecked: fibRangeToggle.checked,
+  });
+
   // TODO: get from user input
-  // const getModifiers = () => {
+  // const getFibMods = () => {
   //   return [-0.08, -0.05, -0.03, -0.01, 1, 0.08, 0.05, 0.03, 0.01];
   // };
 
-  const getModifiers = () => [-0.08, -0.05, -0.03, -0.01, 0, 0.01, 0.03, 0.05, 0.08];
-  // const getModifiers = () => [-0.01, 0, 0.01];
+  const getFibMods = () => [-0.08, -0.05, -0.03, -0.01, 0, 0.01, 0.03, 0.05, 0.08];
+  // const getFibMods = () => [-0.01, 0, 0.01];
   const getNotes = () =>
-    getModifiers().map((mod) => {
+    getFibMods().map((mod) => {
       if (mod > 0) {
         return `${mod * 100}% UP from: ${getTarget()}`;
       }
@@ -110,18 +121,34 @@
     });
 
   const getPrices = () => {
-    const modifiers = getModifiers();
     const target = +getTarget();
-    return modifiers.map((modifier) => {
-      if (modifier < 0) {
-        const diff = target * Math.abs(modifier);
-        const result = target - diff;
+    const prices = [target];
+    const { isBigEvensChecked, isFibRangeChecked } = getPriceOptions();
+
+    if (isFibRangeChecked) {
+      const fibMods = getFibMods();
+      const fibPrices = fibMods.map((fibMod) => {
+        if (fibMod < 0) {
+          const diff = target * Math.abs(fibMod);
+          const result = target - diff;
+          return Math.abs(result) > 1 ? result.toFixed(2) : result.toFixed(8);
+        }
+        const diff = target * fibMod;
+        const result = target + diff;
         return Math.abs(result) > 1 ? result.toFixed(2) : result.toFixed(8);
+      });
+      prices.push(...fibPrices);
+    }
+
+    if (isBigEvensChecked) {
+      // needs to handle whole and fractional
+      // i.e. 120 && 0.00120044
+      if (target > 1) {
+        // whole numbers
+        // get 10s place
+        // const
       }
-      const diff = target * modifier;
-      const result = target + diff;
-      return Math.abs(result) > 1 ? result.toFixed(2) : result.toFixed(8);
-    });
+    }
   };
 
   const filterAlerts = (model) => {

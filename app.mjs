@@ -24,6 +24,7 @@ const headers = {
 const app = express();
 
 // for static front end
+app.use(express.static('common'));
 app.use(express.static('public'));
 
 // middleware

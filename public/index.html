@@ -20,7 +20,7 @@
   <!-- <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"> -->
 
   <script src="js/profiler.js"></script>
-  <script src="js/utils.js"></script>
+  <script src="../utils.js"></script>
 </head>
 
 <body>
@@ -71,10 +71,22 @@
               </div>
             </div>
 
-            <div class="form-row route" data-route-ids="creating">
+            <div class="form__row route" data-route-ids="creating">
               <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
                 <input class="mdl-textfield__input" type="text" id="target">
                 <label class="mdl-textfield__label" for="target">Target</label>
+              </div>
+
+              <!-- price types -->
+              <div class="form__toggles">
+                <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="fib-range">
+                  <input type="checkbox" id="fib-range" class="mdl-checkbox__input" checked>
+                  <span class="mdl-checkbox__label">FibRange</span>
+                </label>
+                <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="big-evens">
+                  <input type="checkbox" id="big-evens" class="mdl-checkbox__input">
+                  <span class="mdl-checkbox__label">BigEvens</span>
+                </label>
               </div>
             </div>
 

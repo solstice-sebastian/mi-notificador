@@ -233,15 +233,45 @@
 
     return { run };
   };
-  window.Utils = () => ({
-    buildTable,
-    emptyElems,
-    listenForEnter,
-    runLater,
-    resolveLater,
-    createRouter,
-    isThenable,
-    promiseQueue,
-    promiseFactoryQueue,
-  });
+
+  const isEmpty = (x = {}) =>
+    x === null ||
+    x === undefined ||
+    x === false ||
+    x === '' ||
+    x === [] ||
+    Object.keys(x).length === 0;
+
+  const findSignificantNumbersPlace = (x) => {
+    if (x > 1) {
+      return 1;
+    }
+    return 0;
+  };
+
+  if (window !== undefined && document !== undefined) {
+    window.Utils = () => ({
+      buildTable,
+      emptyElems,
+      listenForEnter,
+      createRouter,
+      runLater,
+      resolveLater,
+      isThenable,
+      promiseQueue,
+      promiseFactoryQueue,
+      isEmpty,
+      findSignificantNumbersPlace,
+    });
+  } else if (module !== undefined && module.exports !== undefined) {
+    module.exports = {
+      runLater,
+      resolveLater,
+      isThenable,
+      promiseQueue,
+      promiseFactoryQueue,
+      isEmpty,
+      findSignificantNumbersPlace,
+    };
+  }
 })();

@@ -5,7 +5,8 @@
   "main": "app.mjs",
   "scripts": {
     "dev-exp": "nodemon --experimental-modules app.mjs",
-    "dev": "nodemon app.mjs"
+    "dev": "nodemon app.mjs",
+    "test": "nodemon utils.js"
   },
   "author": "Aric Allen",
   "license": "MIT",
@@ -21,7 +22,8 @@
     "node-fetch": "^1.7.3",
     "nodemon": "^1.14.11",
     "prettier": "^1.10.2",
-    "request": "^2.83.0"
+    "request": "^2.83.0",
+    "tape": "^4.8.0"
   },
   "eslint": {
     "env": {
