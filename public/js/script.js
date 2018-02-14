@@ -31,7 +31,7 @@
   const router = createRouter({ links });
   router.goTo({ id: 'home' });
 
-  const profiler = window.Profiler();
+  // const profiler = window.Profiler();
 
   const alertsContainer = document.getElementById('alerts');
 
@@ -192,20 +192,40 @@
     });
     emptyElems(elemsToEmpty);
     const alertIds = selectedRows.map((row) => row.getAttribute('data-record-id'));
-    return fetch('deleteAlerts', {
-      method: 'POST',
-      headers,
-      body: JSON.stringify({ alertIds }),
-    })
-      .then((response) => response.json())
-      .then((response) => {
-        spinner.hide();
-        if (response && response.err_msg) {
-          return Promise.reject(new Error(response.err_msg));
+    // split into lists of <= 5
+    const listOfLists = alertIds.reduce(
+      (acc, curr) => {
+        const lastList = acc[acc.length - 1];
+        if (lastList.length < 6) {
+          // add to lastList
+          lastList.push(curr);
+        } else {
+          // start new list
+          acc.push([curr]);
         }
-        return Promise.resolve(runLater(getAlerts, API_WAIT_TIME));
-      })
-      .catch((err) => console.log(`err:`, err));
+        return acc;
+      },
+      [[]]
+    );
+
+    console.log(`listOfLists:`, listOfLists);
+
+    // const factories = alertIds.map((alertId) => () =>
+    //   fetch('deleteAlerts', {
+    //     method: 'POST',
+    //     headers,
+    //     body: JSON.stringify({ alertIds }),
+    //   })
+    //     .then((response) => response.json())
+    //     .then((response) => {
+    //       spinner.hide();
+    //       if (response && response.err_msg) {
+    //         return Promise.reject(new Error(response.err_msg));
+    //       }
+    //       return Promise.resolve(runLater(getAlerts, API_WAIT_TIME));
+    //     })
+    //     .catch((err) => console.log(`err:`, err))
+    // );
   };
 
   /**
@@ -232,7 +252,6 @@
     const exchange = getExchange();
     const symbol = getSymbol();
     const prices = getPrices();
-    // const prices = [getTarget()];
     const notes = getNotes();
     const promises = prices.map((price, i) => () =>
       addAlert({
@@ -244,10 +263,8 @@
       })
     );
     const queue = promiseFactoryQueue(promises);
-    profiler.start();
     return queue
-      .run(500)
-      .then(() => profiler.log('addAlert finished'))
+      .run(250)
       .then(getAlerts)
       .catch((error) => {
         console.log(`error:`, error);
