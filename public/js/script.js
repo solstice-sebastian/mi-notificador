@@ -1,5 +1,6 @@
 (() => {
-  const { emptyElems, promiseFactoryQueue, createRouter } = window.Utils();
+  const { emptyElems, createRouter } = window.BrowserUtils();
+  const { promiseFactoryQueue } = window.Utils();
   const { buildMDLTable, getSelectedRows, createSpinner, createDialog } = window.MDLHelpers();
 
   const IS_DEV = window.location.origin.includes('localhost');
