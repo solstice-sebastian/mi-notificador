@@ -6,7 +6,7 @@
   "scripts": {
     "dev-exp": "nodemon --experimental-modules app.mjs",
     "dev": "nodemon app.mjs",
-    "test": "node tests/utils.js"
+    "test": "tape tests/**/*.js | faucet"
   },
   "author": "Aric Allen",
   "license": "MIT",
@@ -17,6 +17,7 @@
     "eslint-config-prettier": "^2.9.0",
     "eslint-plugin-prettier": "^2.5.0",
     "express": "^4.16.2",
+    "faucet": "^0.0.1",
     "material-components-web": "^0.28.0",
     "node-coinigy": "^2.0.1",
     "node-fetch": "^1.7.3",
