@@ -1,5 +1,5 @@
 (() => {
-  const { emptyElems, createRouter } = window.BrowserUtils();
+  const { emptyElems, createRouter, buildTable } = window.BrowserUtils();
   const { promiseFactoryQueue } = window.Utils();
   const { buildMDLTable, getSelectedRows, createSpinner, createDialog } = window.MDLHelpers();
 
@@ -123,33 +123,17 @@
 
   const getPrices = () => {
     const target = +getTarget();
-    const prices = [target];
-    const { isBigEvensChecked, isFibRangeChecked } = getPriceOptions();
-
-    if (isFibRangeChecked) {
-      const fibMods = getFibMods();
-      const fibPrices = fibMods.map((fibMod) => {
-        if (fibMod < 0) {
-          const diff = target * Math.abs(fibMod);
-          const result = target - diff;
-          return Math.abs(result) > 1 ? result.toFixed(2) : result.toFixed(8);
-        }
-        const diff = target * fibMod;
-        const result = target + diff;
+    const fibMods = getFibMods();
+    return fibMods.map((fibMod) => {
+      if (fibMod < 0) {
+        const diff = target * Math.abs(fibMod);
+        const result = target - diff;
         return Math.abs(result) > 1 ? result.toFixed(2) : result.toFixed(8);
-      });
-      prices.push(...fibPrices);
-    }
-
-    if (isBigEvensChecked) {
-      // needs to handle whole and fractional
-      // i.e. 120 && 0.00120044
-      if (target > 1) {
-        // whole numbers
-        // get 10s place
-        // const
       }
-    }
+      const diff = target * fibMod;
+      const result = target + diff;
+      return Math.abs(result) > 1 ? result.toFixed(2) : result.toFixed(8);
+    });
   };
 
   const filterAlerts = (model) => {
@@ -323,9 +307,9 @@
    */
   if (IS_DEV === true) {
     router.goTo({ id: 'creating' });
-    symbolInput.value = 'OMG/BTC';
+    symbolInput.value = 'LTC/BTC';
     exchangeInput.value = 'Binance';
-    targetInput.value = 0.000068;
+    targetInput.value = 0.043;
 
     // runLater(getAlerts, 50);
   }

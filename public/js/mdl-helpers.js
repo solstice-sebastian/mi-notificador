@@ -7,7 +7,7 @@
     throw new Error('missing MDL dependencies for MDLHelpers');
   }
 
-  const { buildTable } = window.Utils();
+  const { buildTable } = window.BrowserUtils();
   const { componentHandler } = window;
 
   /**
