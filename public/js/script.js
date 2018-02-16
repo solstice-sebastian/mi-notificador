@@ -32,6 +32,7 @@
   const links = Array.from(document.querySelectorAll('.router-link'));
   const router = createRouter({ links });
   router.goTo({ id: 'home' });
+  const dynamicRangeRow = hideable({ elem: document.getElementById('dynamic-range-row') });
 
   // const profiler = window.Profiler();
 
@@ -52,6 +53,7 @@
   // toggles
   const dynamicRangeToggle = document.getElementById('dynamic-range');
   const fibRangeToggle = document.getElementById('fib-range');
+  const plusMinusToggle = document.getElementById('plus-minus');
 
   const spinnerContainer = document.getElementById('spinner-container');
   const spinner = createSpinner({ container: spinnerContainer });
@@ -163,6 +165,10 @@
       throw new Error(`Error: ${model.reason}`);
     }
     return null;
+  };
+
+  const toggleDynamicRangeInputs = () => {
+    dynamicRangeRow.toggle();
   };
 
   const getAlerts = () => {
@@ -287,6 +293,8 @@
   getAlertsButton.addEventListener('click', getAlerts);
   addAlertsButton.addEventListener('click', addAlerts);
   deleteAlertsButton.addEventListener('click', deleteSelected);
+
+  dynamicRangeToggle.addEventListener('click', toggleDynamicRangeInputs);
 
   symbolInput.addEventListener('keyup', () => update());
   exchangeInput.addEventListener('keyup', () => update());
