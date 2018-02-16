@@ -15,7 +15,7 @@
     return mixin;
   };
 
-  const Mixins = { hideable };
+  const Mixins = () => ({ hideable });
 
   window.Mixins = Mixins;
 })();

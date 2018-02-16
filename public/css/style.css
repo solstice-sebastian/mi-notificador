@@ -6,6 +6,10 @@ form {
   margin-bottom: 15px;
 }
 
+.form__row {
+  margin-bottom: 15px;
+}
+
 .route {
   display: none;
 }

@@ -20,6 +20,7 @@
   <!-- <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"> -->
 
   <script src="js/profiler.js"></script>
+  <script src="js/mixins.js"></script>
   <script src="js/browser-utils.js"></script>
   <script src="../utils.js"></script>
 </head>
@@ -60,7 +61,7 @@
         <section data-route-ids="managing,creating" class="route">
           <form action="#" id="get-alerts-form">
 
-            <div class="form-row">
+            <div class="form__row">
               <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
                 <input class="mdl-textfield__input" type="text" id="symbol">
                 <label class="mdl-textfield__label" for="symbol">Symbol</label>
@@ -84,14 +85,29 @@
                   <input type="checkbox" id="fib-range" class="mdl-checkbox__input" checked>
                   <span class="mdl-checkbox__label">FibRange</span>
                 </label>
-                <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="big-evens">
-                  <input type="checkbox" id="big-evens" class="mdl-checkbox__input">
-                  <span class="mdl-checkbox__label">BigEvens</span>
+                <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="dynamic-range">
+                  <input type="checkbox" id="dynamic-range" class="mdl-checkbox__input">
+                  <span class="mdl-checkbox__label">DynamicRange</span>
                 </label>
               </div>
             </div>
 
-            <div class="form-row action-buttons">
+            <div class="form__row dynamic-range-inputs">
+              <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect is-hidden" for="plus-minus">
+                <input type="checkbox" id="plus-minus" class="mdl-checkbox__input" checked>
+                <span class="mdl-checkbox__label">+/-</span>
+              </label>
+              <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label is-hidden">
+                <input class="mdl-textfield__input" type="text" id="mod-amount">
+                <label class="mdl-textfield__label" for="mod-amount">Amount</label>
+              </div>
+              <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label is-hidden">
+                <input class="mdl-textfield__input" type="text" id="mod-number">
+                <label class="mdl-textfield__label" for="mod-number"># of times</label>
+              </div>
+            </div>
+
+            <div class="form__row action-buttons">
               <button id="get-alerts" class="mdl-button
                 mdl-button--primary
                 mdl-button--raised">
@@ -99,17 +115,17 @@
               </button>
 
               <button id="add-alerts" class="mdl-button
-              mdl-button--accent
-              mdl-button--raised route" data-route-ids="creating">
-              Add Alerts
-            </button>
+                mdl-button--accent
+                mdl-button--raised route" data-route-ids="creating">
+                Add Alerts
+              </button>
 
-            <button id="delete-alerts" class="mdl-button
-              mdl-button--danger
-              mdl-button--raised route" data-route-ids="managing,creating">
-              Delete Selected
-            </button>
-          </div>
+              <button id="delete-alerts" class="mdl-button
+                mdl-button--danger
+                mdl-button--raised route" data-route-ids="managing,creating">
+                Delete Selected
+              </button>
+            </div>
 
           </form>
         </section>

@@ -1,7 +1,8 @@
 (() => {
-  const { emptyElems, createRouter, buildTable } = window.BrowserUtils();
+  const { emptyElems, createRouter } = window.BrowserUtils();
   const { promiseFactoryQueue } = window.Utils();
   const { buildMDLTable, getSelectedRows, createSpinner, createDialog } = window.MDLHelpers();
+  const { hideable } = window.Mixins();
 
   const IS_DEV = window.location.origin.includes('localhost');
 
@@ -40,6 +41,8 @@
   const exchangeInput = document.getElementById('exchange');
   const symbolInput = document.getElementById('symbol');
   const targetInput = document.getElementById('target');
+  const modAmountInput = document.getElementById('mod-amount');
+  const modNumberInput = document.getElementById('mod-number');
 
   // buttons
   const addAlertsButton = document.getElementById('add-alerts');
@@ -47,7 +50,7 @@
   const deleteAlertsButton = document.getElementById('delete-alerts');
 
   // toggles
-  const bigEvensToggle = document.getElementById('big-evens');
+  const dynamicRangeToggle = document.getElementById('dynamic-range');
   const fibRangeToggle = document.getElementById('fib-range');
 
   const spinnerContainer = document.getElementById('spinner-container');
@@ -86,30 +89,16 @@
     },
   };
 
-  const getExchange = () => {
-    const exchange = exchangeInput.value;
-    return exchange;
-  };
-
-  const getSymbol = () => {
-    const symbol = symbolInput.value;
-    return symbol;
-  };
-
-  const getTarget = () => {
-    const target = targetInput.value;
-    return target;
-  };
+  const getExchange = () => exchangeInput.value;
+  const getSymbol = () => symbolInput.value;
+  const getTarget = () => targetInput.value;
+  const getModNumber = () => modNumberInput.value;
+  const getModAmount = () => modAmountInput.value;
 
   const getPriceOptions = () => ({
-    isBigEvensChecked: bigEvensToggle.checked,
+    isDynamicRangeChecked: dynamicRangeToggle.checked,
     isFibRangeChecked: fibRangeToggle.checked,
   });
-
-  // TODO: get from user input
-  // const getFibMods = () => {
-  //   return [-0.08, -0.05, -0.03, -0.01, 1, 0.08, 0.05, 0.03, 0.01];
-  // };
 
   const getFibMods = () => [-0.08, -0.05, -0.03, -0.01, 0, 0.01, 0.03, 0.05, 0.08];
   // const getFibMods = () => [-0.01, 0, 0.01];
