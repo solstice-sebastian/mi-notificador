@@ -22,7 +22,9 @@ const codeForInput = ({ input, exchanges = [] }) => {
   }
 
   const code = exchanges.find(
-    (exchange) => exchange.exch_name === input || exchange.exch_code === input
+    (exchange) =>
+      exchange.exch_name.toLowerCase() === input.toLowerCase() ||
+      exchange.exch_code.toLowerCase() === input.toLowerCase()
   ).exch_code;
 
   if (code === undefined) {

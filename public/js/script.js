@@ -307,10 +307,8 @@
    */
   if (IS_DEV === true) {
     router.goTo({ id: 'creating' });
-    symbolInput.value = 'LTC/BTC';
-    exchangeInput.value = 'Binance';
-    targetInput.value = 0.043;
-
-    // runLater(getAlerts, 50);
+    symbolInput.value = 'BTC/USD';
+    exchangeInput.value = 'GDAX';
+    targetInput.value = 10125;
   }
 })();
