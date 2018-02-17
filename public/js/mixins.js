@@ -1,6 +1,7 @@
 (() => {
   const hideable = ({ elem, isHiddenClass = 'is-hidden' }) => {
     let isHidden = elem.classList.contains(isHiddenClass);
+    elem.classList.add('is-hideable');
     const extensions = {
       show() {
         this.classList.remove(isHiddenClass);

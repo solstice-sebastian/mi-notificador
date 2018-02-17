@@ -103,7 +103,6 @@
   });
 
   const getFibMods = () => [-0.08, -0.05, -0.03, -0.01, 0, 0.01, 0.03, 0.05, 0.08];
-  // const getFibMods = () => [-0.01, 0, 0.01];
   const getNotes = () =>
     getFibMods().map((mod) => {
       if (mod > 0) {
@@ -112,8 +111,7 @@
       return `${mod * 100}% DOWN from: ${getTarget()}`;
     });
 
-  const getPrices = () => {
-    const target = +getTarget();
+  const getFibPrices = (target) => {
     const fibMods = getFibMods();
     return fibMods.map((fibMod) => {
       if (fibMod < 0) {
@@ -125,6 +123,35 @@
       const result = target + diff;
       return Math.abs(result) > 1 ? result.toFixed(2) : result.toFixed(8);
     });
+  };
+
+  const getDynamicPrices = (target) => {
+    const prices = [];
+    const modAmount = +getModAmount() || 0;
+    const modNumber = +getModNumber() || 0;
+    const isPlusMinus = plusMinusToggle.checked === true;
+    Array.from(Array(modNumber)).forEach((_, i) => {
+      const mod = (i + 1) * modAmount;
+      prices.push(target + mod);
+      if (isPlusMinus) {
+        prices.push(target - mod);
+      }
+      return prices;
+    });
+    return prices;
+  };
+
+  const getPrices = () => {
+    const target = +getTarget();
+    const prices = [target];
+    const { isFibRangeChecked, isDynamicRangeChecked } = getPriceOptions();
+    if (isFibRangeChecked) {
+      prices.push(...getFibPrices(target));
+    }
+    if (isDynamicRangeChecked) {
+      prices.push(...getDynamicPrices(target));
+    }
+    return prices;
   };
 
   const filterAlerts = (model) => {
@@ -259,6 +286,7 @@
     const symbol = getSymbol();
     const prices = getPrices();
     const notes = getNotes();
+    return console.log(`prices:`, prices);
     const factories = prices.map((price, i) => () =>
       addAlert({
         headers,
@@ -306,6 +334,8 @@
     router.goTo({ id: 'creating' });
     symbolInput.value = 'BTC/USD';
     exchangeInput.value = 'GDAX';
-    targetInput.value = 10125;
+    targetInput.value = 100;
+    modAmountInput.value = 10;
+    modNumberInput.value = 4;
   }
 })();
