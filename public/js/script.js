@@ -286,7 +286,7 @@
     const symbol = getSymbol();
     const prices = getPrices();
     const notes = getNotes();
-    return console.log(`prices:`, prices);
+    console.log(`prices:`, prices);
     const factories = prices.map((price, i) => () =>
       addAlert({
         headers,
