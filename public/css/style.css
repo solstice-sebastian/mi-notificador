@@ -10,10 +10,6 @@ form {
   margin-bottom: 15px;
 }
 
-.route {
-  display: none;
-}
-
 .route.is-active {
   display: initial;
 }

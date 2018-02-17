@@ -29,35 +29,33 @@
     <header class="mdl-layout__header">
       <div class="mdl-layout__header-row">
         <!-- Title -->
-        <a class="mdl-layout-title router-link button" href="#home" data-route-id="home">MiNotificador</a>
+        <a class="mdl-layout-title button" href="/">MiNotificador</a>
         <!-- Add spacer, to align navigation to the right -->
         <div class="mdl-layout-spacer"></div>
         <!-- Navigation -->
         <nav class="mdl-navigation">
-          <a class="mdl-navigation__link router-link" href="#managing" data-route-id="managing">Managing</a>
-          <a class="mdl-navigation__link router-link" href="#creating" data-route-id="creating">Creating</a>
+          <a class="mdl-navigation__link">More coming soon...</a>
         </nav>
       </div>
     </header>
 
     <!-- drawer -->
     <div class="mdl-layout__drawer">
-      <a class="mdl-layout-title router-link button" href="#home" data-route-id="home">MiNotificador</a>
+      <a class="mdl-layout-title button" href="/">MiNotificador</a>
       <nav class="mdl-navigation">
-        <a class="mdl-navigation__link router-link" href="#managing" data-route-id="managing">Managing</a>
-        <a class="mdl-navigation__link router-link" href="#creating" data-route-id="creating">Creating</a>
+        <a class="mdl-navigation__link">More coming soon...</a>
       </nav>
     </div>
 
     <main class="mdl-layout__content">
       <div class="page-content">
 
-        <section data-route-ids="home" class="route is-active">
+        <!-- <section>
           <h3>A simple alert helper for Coinigy...</h3>
           <p>Instructions to setup apiKeys will go here.</p>
-        </section>
+        </section> -->
 
-        <section data-route-ids="managing,creating" class="route">
+        <section>
           <form action="#" id="get-alerts-form">
 
             <div class="form__row">
@@ -72,7 +70,7 @@
               </div>
             </div>
 
-            <div class="form__row route" data-route-ids="creating">
+            <div class="form__row">
               <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
                 <input class="mdl-textfield__input" type="text" id="target">
                 <label class="mdl-textfield__label" for="target">Target</label>
@@ -116,13 +114,13 @@
 
               <button id="add-alerts" class="mdl-button
                 mdl-button--accent
-                mdl-button--raised route" data-route-ids="creating">
+                mdl-button--raised">
                 Add Alerts
               </button>
 
               <button id="delete-alerts" class="mdl-button
                 mdl-button--danger
-                mdl-button--raised route" data-route-ids="managing,creating">
+                mdl-button--raised">
                 Delete Selected
               </button>
             </div>

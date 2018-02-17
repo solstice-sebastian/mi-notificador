@@ -1,5 +1,5 @@
 (() => {
-  const { emptyElems, createRouter } = window.BrowserUtils();
+  const { emptyElems } = window.BrowserUtils();
   const { promiseFactoryQueue } = window.Utils();
   const { buildMDLTable, getSelectedRows, createSpinner, createDialog } = window.MDLHelpers();
   const { hideable } = window.Mixins();
@@ -29,9 +29,6 @@
 
   const getModel = () => _model;
 
-  const links = Array.from(document.querySelectorAll('.router-link'));
-  const router = createRouter({ links });
-  router.goTo({ id: 'home' });
   const dynamicRangeRow = hideable({ elem: document.getElementById('dynamic-range-row') });
 
   // const profiler = window.Profiler();
@@ -331,11 +328,11 @@
    * dev helpers
    */
   if (IS_DEV === true) {
-    router.goTo({ id: 'creating' });
     symbolInput.value = 'BTC/USD';
     exchangeInput.value = 'GDAX';
     targetInput.value = 100;
     modAmountInput.value = 10;
     modNumberInput.value = 4;
+    // window.setTimeout(() => getAlertsButton.click(), 500);
   }
 })();
