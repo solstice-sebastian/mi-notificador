@@ -8,6 +8,9 @@
 
   const API_WAIT_TIME = 1000 * 1.5; // 1.5 seconds
   const STATUS_SUCCESS = 200;
+
+  const PRICE_TYPE_DYNAMIC = 'dynamic';
+  const PRICE_TYPE_FIBONACCI = 'fibonacci';
   // const STATUS_RATE_EXCEEDED = 500;
 
   const checkStatus = async () => {
@@ -22,6 +25,13 @@
   });
 
   let _model = []; // the data for the table
+
+  class Price {
+    constructor(amount, type = PRICE_TYPE_FIBONACCI) {
+      this.amount = +amount;
+      this.type = type;
+    }
+  }
 
   const cacheModel = (data) => {
     _model = data;
@@ -99,27 +109,42 @@
     isFibRangeChecked: fibRangeToggle.checked,
   });
 
+  const getPercent = (amount, target) => Math.abs((amount - target) / target * 100);
+
   const getFibMods = () => [-0.08, -0.05, -0.03, -0.01, 0, 0.01, 0.03, 0.05, 0.08];
-  const getNotes = () =>
-    getFibMods().map((mod) => {
-      if (mod > 0) {
-        return `${mod * 100}% UP from: ${getTarget()}`;
+  const getNotes = (prices) =>
+    prices.map(({ amount, type }) => {
+      const target = +getTarget();
+      // fibonacci prices
+      if (amount === target) {
+        return `Price at target: ${target}`;
+      } else if (type === PRICE_TYPE_FIBONACCI) {
+        if (amount > target) {
+          return `${getPercent(amount, target)}% UP from: ${target}`;
+        }
+        return `${getPercent(amount, target)}% DOWN from: ${target}`;
+      } else if (amount > target) {
+        // dynamic prices
+        return `${amount - target} UP from: ${target}`;
+      } else {
+        return `${target - amount} DOWN from: ${target}`;
       }
-      return `${mod * 100}% DOWN from: ${getTarget()}`;
     });
 
   const getFibPrices = (target) => {
     const fibMods = getFibMods();
-    return fibMods.map((fibMod) => {
-      if (fibMod < 0) {
-        const diff = target * Math.abs(fibMod);
-        const result = target - diff;
+    return fibMods
+      .map((fibMod) => {
+        if (fibMod < 0) {
+          const diff = target * Math.abs(fibMod);
+          const result = target - diff;
+          return Math.abs(result) > 1 ? result.toFixed(2) : result.toFixed(8);
+        }
+        const diff = target * fibMod;
+        const result = target + diff;
         return Math.abs(result) > 1 ? result.toFixed(2) : result.toFixed(8);
-      }
-      const diff = target * fibMod;
-      const result = target + diff;
-      return Math.abs(result) > 1 ? result.toFixed(2) : result.toFixed(8);
-    });
+      })
+      .map((amount) => new Price(amount, PRICE_TYPE_FIBONACCI));
   };
 
   const getDynamicPrices = (target) => {
@@ -135,12 +160,12 @@
       }
       return prices;
     });
-    return prices;
+    return prices.map((amount) => new Price(amount, PRICE_TYPE_DYNAMIC));
   };
 
   const getPrices = () => {
     const target = +getTarget();
-    const prices = [target];
+    const prices = [new Price(target)];
     const { isFibRangeChecked, isDynamicRangeChecked } = getPriceOptions();
     if (isFibRangeChecked) {
       prices.push(...getFibPrices(target));
@@ -254,6 +279,9 @@
     const queue = promiseFactoryQueue(factories);
     queue
       .run(API_WAIT_TIME / factories.length)
+      .then((results) => {
+        console.log(`results:`, results);
+      })
       .then(getAlerts)
       .catch((err) => console.log(`err:`, err));
   };
@@ -282,8 +310,10 @@
     const exchange = getExchange();
     const symbol = getSymbol();
     const prices = getPrices();
-    const notes = getNotes();
+    const notes = getNotes(prices);
     console.log(`prices:`, prices);
+    console.log(`notes:`, notes);
+    return;
     const factories = prices.map((price, i) => () =>
       addAlert({
         headers,
@@ -328,11 +358,12 @@
    * dev helpers
    */
   if (IS_DEV === true) {
-    symbolInput.value = 'BTC/USD';
+    symbolInput.value = 'BCH/USD';
     exchangeInput.value = 'GDAX';
-    targetInput.value = 100;
-    modAmountInput.value = 10;
+    targetInput.value = 1300;
+    modAmountInput.value = 50;
     modNumberInput.value = 4;
+    // dynamicRangeToggle.click();
     // window.setTimeout(() => getAlertsButton.click(), 500);
   }
 })();
