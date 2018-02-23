@@ -6,6 +6,7 @@
   "scripts": {
     "dev-exp": "nodemon --experimental-modules app.js",
     "dev": "nodemon app.js",
+    "start": "node app.js",
     "test": "tape tests/**/*.js | faucet"
   },
   "author": "Aric Allen",

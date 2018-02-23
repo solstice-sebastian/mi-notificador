@@ -35,6 +35,7 @@
         <!-- Navigation -->
         <nav class="mdl-navigation">
           <a class="mdl-navigation__link">More coming soon...</a>
+          <button id="poll">Poll</button>
         </nav>
       </div>
     </header>
@@ -153,6 +154,13 @@
   <script src="js/mdl-helpers.js"></script>
   <script src="js/mixins.js"></script>
   <script src="js/script.js"></script>
+
+  <script>
+    const pollButton = document.getElementById('poll');
+    pollButton.addEventListener('click', () => {
+      fetch('/poll').then((response) => response.json()).then((data) => console.log(`data:`, data));
+    });
+  </script>
 </body>
 
 </html>

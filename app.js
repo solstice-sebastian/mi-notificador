@@ -5,10 +5,6 @@ const getAlerts = require('./modules/getAlerts.js');
 const deleteAlert = require('./modules/deleteAlert.js');
 const addAlert = require('./modules/addAlert.js');
 
-// dev
-const fs = require('fs');
-const fetch = require('node-fetch');
-
 const { apiKey, apiSecret } = keys;
 
 const headers = {
@@ -59,24 +55,3 @@ app.post('/addAlert', (req, res) => {
 
 // start server
 app.listen(3000);
-
-// dev
-const method = 'POST';
-const endpoint = 'https://api.coinigy.com/api/v1/data';
-const body = JSON.stringify({
-  exchange_code: 'GDAX',
-  exchange_market: 'BTC/USD',
-  type: 'history',
-});
-
-fetch(endpoint, { method, headers, body })
-  .then((response) => response.json())
-  .then(({ data }) => {
-    fs.writeFile('btc.json', JSON.stringify(data), (err) => {
-      if (err) {
-        console.log(`err:`, err);
-        throw err;
-      }
-    });
-  })
-  .catch((err) => err);
