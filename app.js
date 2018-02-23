@@ -1,11 +1,11 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const keys = require('./private/keys.js');
+const Config = require('./private/config.js');
 const getAlerts = require('./modules/getAlerts.js');
 const deleteAlert = require('./modules/deleteAlert.js');
 const addAlert = require('./modules/addAlert.js');
 
-const { apiKey, apiSecret } = keys;
+const { apiKey, apiSecret } = Config();
 
 const headers = {
   'Content-Type': 'application/json',

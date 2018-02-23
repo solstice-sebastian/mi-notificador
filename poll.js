@@ -1,5 +1,14 @@
 const fs = require('fs');
 const fetch = require('node-fetch');
+const Config = require('./private/config.js');
+
+const { apiKey, apiSecret } = Config();
+
+const headers = {
+  'Content-Type': 'application/json',
+  'X-API-KEY': apiKey,
+  'X-API-SECRET': apiSecret,
+};
 
 const method = 'POST';
 // const endpoint = 'https://api.coinigy.com/api/v1/data';
@@ -45,8 +54,4 @@ const poll = () =>
     })
     .catch((err) => err);
 
-// poll();
-
-app.get('/poll', (req, res) => {
-  res.send(poll());
-});
+poll();
