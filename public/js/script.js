@@ -98,23 +98,23 @@
     },
   };
 
-  const getExchange = () => exchangeInput.value;
-  const getSymbol = () => symbolInput.value;
-  const getTarget = () => targetInput.value;
-  const getModNumber = () => modNumberInput.value;
-  const getModAmount = () => modAmountInput.value;
+  const getExchange = () => exchangeInput.value.toUpperCase();
+  const getSymbol = () => symbolInput.value.toUpperCase();
+  const getTarget = () => +targetInput.value;
+  const getModNumber = () => +modNumberInput.value;
+  const getModAmount = () => +modAmountInput.value;
 
   const getPriceOptions = () => ({
     isDynamicRangeChecked: dynamicRangeToggle.checked,
     isFibRangeChecked: fibRangeToggle.checked,
   });
 
-  const getPercent = (amount, target) => Math.abs((amount - target) / target * 100);
+  const getPercent = (amount, target) => Math.round(Math.abs((amount - target) / target * 100));
 
   const getFibMods = () => [-0.08, -0.05, -0.03, -0.01, 0, 0.01, 0.03, 0.05, 0.08];
   const getNotes = (prices) =>
     prices.map(({ amount, type }) => {
-      const target = +getTarget();
+      const target = getTarget();
       // fibonacci prices
       if (amount === target) {
         return `Price at target: ${target}`;
@@ -164,7 +164,7 @@
   };
 
   const getPrices = () => {
-    const target = +getTarget();
+    const target = getTarget();
     const prices = [new Price(target)];
     const { isFibRangeChecked, isDynamicRangeChecked } = getPriceOptions();
     if (isFibRangeChecked) {
@@ -313,11 +313,10 @@
     const notes = getNotes(prices);
     console.log(`prices:`, prices);
     console.log(`notes:`, notes);
-    return;
     const factories = prices.map((price, i) => () =>
       addAlert({
         headers,
-        price,
+        price: price.amount,
         symbol,
         exchange,
         note: notes[i],
@@ -358,9 +357,9 @@
    * dev helpers
    */
   if (IS_DEV === true) {
-    symbolInput.value = 'BCH/USD';
+    symbolInput.value = 'LTC/USD';
     exchangeInput.value = 'GDAX';
-    targetInput.value = 1300;
+    targetInput.value = 216;
     modAmountInput.value = 50;
     modNumberInput.value = 4;
     // dynamicRangeToggle.click();

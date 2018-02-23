@@ -2,10 +2,10 @@
   "name": "mi-notificador",
   "version": "0.0.0",
   "description": "helps easy alert setting based on fib percentages and entry price ",
-  "main": "app.mjs",
+  "main": "app.js",
   "scripts": {
-    "dev-exp": "nodemon --experimental-modules app.mjs",
-    "dev": "nodemon app.mjs",
+    "dev-exp": "nodemon --experimental-modules app.js",
+    "dev": "nodemon app.js",
     "test": "tape tests/**/*.js | faucet"
   },
   "author": "Aric Allen",
