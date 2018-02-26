@@ -357,9 +357,9 @@
    * dev helpers
    */
   if (IS_DEV === true) {
-    symbolInput.value = 'LTC/USD';
-    exchangeInput.value = 'GDAX';
-    targetInput.value = 216;
+    symbolInput.value = 'NANO/BTC';
+    exchangeInput.value = 'BINA';
+    targetInput.value = 0.001374;
     modAmountInput.value = 50;
     modNumberInput.value = 4;
     // dynamicRangeToggle.click();
