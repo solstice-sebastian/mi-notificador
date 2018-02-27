@@ -9,8 +9,9 @@
   const API_WAIT_TIME = 1000 * 1.5; // 1.5 seconds
   const STATUS_SUCCESS = 200;
 
-  const PRICE_TYPE_DYNAMIC = 'dynamic';
-  const PRICE_TYPE_FIBONACCI = 'fibonacci';
+  const PRICE_TYPE_DYNAMIC = 'DYNAMIC';
+  const PRICE_TYPE_DYNAMIC_PERCENT = 'DYNAMIC_PERCENT';
+  const PRICE_TYPE_FIBONACCI = 'FIBONACCI';
   // const STATUS_RATE_EXCEEDED = 500;
 
   const checkStatus = async () => {
@@ -114,21 +115,32 @@
 
   const getFibMods = () => [-0.08, -0.05, -0.03, -0.01, 0.01, 0.03, 0.05, 0.08];
   const getNotes = (prices) =>
-    prices.map(({ amount, type }) => {
+    prices.map(({ amount, type, mod }) => {
       const target = getTarget();
-      // fibonacci prices
+
       if (amount === target) {
         return `Price at target: ${target}`;
-      } else if (type === PRICE_TYPE_FIBONACCI) {
-        if (amount > target) {
-          return `${getPercent(amount, target)}% UP from: ${target}`;
-        }
-        return `${getPercent(amount, target)}% DOWN from: ${target}`;
-      } else if (amount > target) {
-        // dynamic prices
-        return `${amount - target} UP from: ${target}`;
-      } else {
-        return `${target - amount} DOWN from: ${target}`;
+      }
+
+      switch (type) {
+        case PRICE_TYPE_FIBONACCI:
+          if (amount > target) {
+            return `${getPercent(amount, target).toFixed()}% UP from: ${target}`;
+          }
+          return `${getPercent(amount, target).toFixed()}% DOWN from: ${target}`;
+        case PRICE_TYPE_DYNAMIC_PERCENT:
+          if (amount > target) {
+            return `${getPercent(amount, target).toFixed()}% UP from: ${target}`;
+          }
+          return `${getPercent(amount, target).toFixed()}% DOWN from: ${target}`;
+        case PRICE_TYPE_DYNAMIC:
+          if (amount > target) {
+            // dynamic prices
+            return `${amount - target} UP from: ${target}`;
+          }
+          return `${target - amount} DOWN from: ${target}`;
+        default:
+          throw new Error('getNotes: incorrect price type');
       }
     });
 
@@ -153,8 +165,9 @@
     const modAmount = +getModAmount() || 0;
     const modNumber = +getModNumber() || 0;
     const isPlusMinus = plusMinusToggle.checked === true;
+    const isPercent = percentToggle.checked === true;
     Array.from(Array(modNumber)).forEach((_, i) => {
-      if (percentToggle.checked === true) {
+      if (isPercent) {
         // every `n` %
         const percent = (i + 1) * modAmount / 100;
         prices.push(target + target * percent);
@@ -170,7 +183,9 @@
       }
       return prices;
     });
-    return prices.map((amount) => new Price(amount, PRICE_TYPE_DYNAMIC));
+    return prices.map(
+      (amount) => new Price(amount, isPercent ? PRICE_TYPE_DYNAMIC_PERCENT : PRICE_TYPE_DYNAMIC)
+    );
   };
 
   const getPrices = () => {
@@ -322,8 +337,10 @@
     const prices = getPrices();
     const notes = getNotes(prices);
     // prices.forEach((price) => console.log('price:', price));
+    notes.forEach((note) => console.log('note:', note));
     // console.log(`prices:`, prices);
     // console.log(`notes:`, notes);
+    // return;
     const factories = prices.map((price, i) => () =>
       addAlert({
         headers,
