@@ -35,7 +35,6 @@
         <!-- Navigation -->
         <nav class="mdl-navigation">
           <a class="mdl-navigation__link">More coming soon...</a>
-          <button id="poll">Poll</button>
         </nav>
       </div>
     </header>
@@ -96,6 +95,10 @@
                 <input type="checkbox" id="plus-minus" class="mdl-checkbox__input" checked>
                 <span class="mdl-checkbox__label">+/-</span>
               </label>
+              <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="percent">
+                <input type="checkbox" id="percent" class="mdl-checkbox__input">
+                <span class="mdl-checkbox__label">%</span>
+              </label>
               <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
                 <input class="mdl-textfield__input" type="text" id="mod-amount">
                 <label class="mdl-textfield__label" for="mod-amount">Amount difference</label>
@@ -155,11 +158,7 @@
   <script src="js/mixins.js"></script>
   <script src="js/script.js"></script>
 
-  <script>
-    const pollButton = document.getElementById('poll');
-    pollButton.addEventListener('click', () => {
-      fetch('/poll').then((response) => response.json()).then((data) => console.log(`data:`, data));
-    });
+  <script></script>
   </script>
 </body>
 

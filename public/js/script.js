@@ -61,6 +61,7 @@
   const dynamicRangeToggle = document.getElementById('dynamic-range');
   const fibRangeToggle = document.getElementById('fib-range');
   const plusMinusToggle = document.getElementById('plus-minus');
+  const percentToggle = document.getElementById('percent');
 
   const spinnerContainer = document.getElementById('spinner-container');
   const spinner = createSpinner({ container: spinnerContainer });
@@ -153,10 +154,19 @@
     const modNumber = +getModNumber() || 0;
     const isPlusMinus = plusMinusToggle.checked === true;
     Array.from(Array(modNumber)).forEach((_, i) => {
-      const mod = (i + 1) * modAmount;
-      prices.push(target + mod);
-      if (isPlusMinus) {
-        prices.push(target - mod);
+      if (percentToggle.checked === true) {
+        // every `n` %
+        const percent = (i + 1) * modAmount / 100;
+        prices.push(target + target * percent);
+        if (isPlusMinus) {
+          prices.push(target - target * percent);
+        }
+      } else {
+        const mod = (i + 1) * modAmount;
+        prices.push(target + mod);
+        if (isPlusMinus) {
+          prices.push(target - mod);
+        }
       }
       return prices;
     });
@@ -311,8 +321,9 @@
     const symbol = getSymbol();
     const prices = getPrices();
     const notes = getNotes(prices);
-    console.log(`prices:`, prices);
-    console.log(`notes:`, notes);
+    // prices.forEach((price) => console.log('price:', price));
+    // console.log(`prices:`, prices);
+    // console.log(`notes:`, notes);
     const factories = prices.map((price, i) => () =>
       addAlert({
         headers,
@@ -359,10 +370,13 @@
   if (IS_DEV === true) {
     symbolInput.value = 'NANO/BTC';
     exchangeInput.value = 'BINA';
-    targetInput.value = 0.001374;
-    modAmountInput.value = 50;
+    targetInput.value = 224;
+    modAmountInput.value = 1;
     modNumberInput.value = 4;
-    // dynamicRangeToggle.click();
+    fibRangeToggle.click(); // uncheck
+    dynamicRangeToggle.click();
+    percentToggle.click();
+    addAlertsButton.click();
     // window.setTimeout(() => getAlertsButton.click(), 500);
   }
 })();
