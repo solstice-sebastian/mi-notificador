@@ -111,7 +111,7 @@
 
   const getPercent = (amount, target) => Math.round(Math.abs((amount - target) / target * 100));
 
-  const getFibMods = () => [-0.08, -0.05, -0.03, -0.01, 0, 0.01, 0.03, 0.05, 0.08];
+  const getFibMods = () => [-0.08, -0.05, -0.03, -0.01, 0.01, 0.03, 0.05, 0.08];
   const getNotes = (prices) =>
     prices.map(({ amount, type }) => {
       const target = getTarget();

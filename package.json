@@ -6,8 +6,6 @@
   "scripts": {
     "dev-exp": "nodemon --experimental-modules app.js",
     "dev": "nodemon app.js",
-    "poll": "node poll.js",
-    "stream": "node stream.js",
     "start": "node app.js",
     "test": "tape tests/**/*.js | faucet"
   },
