@@ -1,9 +1,17 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const Config = require('./private/config.js');
 const getAlerts = require('./modules/getAlerts.js');
 const deleteAlert = require('./modules/deleteAlert.js');
 const addAlert = require('./modules/addAlert.js');
+
+const environment = process.env.NODE_ENV || 'dev';
+const Config =
+  environment === 'dev'
+    ? require('./private/config.js')
+    : () => ({
+        apiKey: process.env.API_KEY,
+        apiSecret: process.env.API_SECRET,
+      });
 
 const { apiKey, apiSecret } = Config();
 
@@ -54,4 +62,4 @@ app.post('/addAlert', (req, res) => {
 });
 
 // start server
-app.listen(3000);
+app.listen(3042);
