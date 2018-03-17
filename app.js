@@ -63,4 +63,4 @@ app.post('/addAlert', (req, res) => {
 });
 
 // start server
-app.listen(3042);
+app.listen(5000);
