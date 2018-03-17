@@ -115,7 +115,7 @@
 
   const getFibMods = () => [-0.08, -0.05, -0.03, -0.01, 0.01, 0.03, 0.05, 0.08];
   const getNotes = (prices) =>
-    prices.map(({ amount, type, mod }) => {
+    prices.map(({ amount, type }) => {
       const target = getTarget();
 
       if (amount === target) {
@@ -381,19 +381,26 @@
   symbolInput.addEventListener('keyup', () => update());
   exchangeInput.addEventListener('keyup', () => update());
 
+  const allInputs = Array.from(document.getElementsByTagName('input'));
+  allInputs.forEach((input) => {
+    input.addEventListener('change', (e) => {
+      e.target.value = e.target.value.trim();
+    });
+  });
+
   /**
    * dev helpers
    */
   if (IS_DEV === true) {
-    symbolInput.value = 'NANO/BTC';
-    exchangeInput.value = 'BINA';
-    targetInput.value = 224;
+    symbolInput.value = 'BTC/USD';
+    exchangeInput.value = 'GDAX';
+    targetInput.value = 9750;
     modAmountInput.value = 1;
-    modNumberInput.value = 4;
+    modNumberInput.value = 8;
     fibRangeToggle.click(); // uncheck
     dynamicRangeToggle.click();
     percentToggle.click();
-    addAlertsButton.click();
+    // addAlertsButton.click();
     // window.setTimeout(() => getAlertsButton.click(), 500);
   }
 })();
