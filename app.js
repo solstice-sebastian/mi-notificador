@@ -62,4 +62,5 @@ app.post('/addAlert', (req, res) => {
 });
 
 // start server
-app.listen(4242);
+console.log(`process.env.PORT:`, process.env.PORT);
+app.listen(process.env.PORT || 5000);
