@@ -4,9 +4,10 @@ const getAlerts = require('./modules/getAlerts.js');
 const deleteAlert = require('./modules/deleteAlert.js');
 const addAlert = require('./modules/addAlert.js');
 
-const environment = process.env.NODE_ENV || 'dev';
+const environment = process.env.NODE_ENV || 'local';
+console.log(`process.env.NODE_ENV:`, process.env.NODE_ENV);
 const Config =
-  environment === 'dev'
+  environment === 'local'
     ? require('./private/config.js')
     : () => ({
         apiKey: process.env.API_KEY,
