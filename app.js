@@ -5,7 +5,6 @@ const deleteAlert = require('./modules/deleteAlert.js');
 const addAlert = require('./modules/addAlert.js');
 
 const environment = process.env.NODE_ENV || 'local';
-console.log(`process.env.NODE_ENV:`, process.env.NODE_ENV);
 const Config =
   environment === 'local'
     ? require('./private/config.js')
@@ -63,4 +62,4 @@ app.post('/addAlert', (req, res) => {
 });
 
 // start server
-app.listen(5000);
+app.listen(4242);
